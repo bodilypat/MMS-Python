@@ -9,33 +9,25 @@ class Patient extends Model
 {
     use HasFactory;
 
-    // The table associated with the model
-    protected $table = 'patients';
-
-    // The attributes that are mass assignable
+    /* Define which fields are mess-assignable to protect against mass assignment vulnerabilities */
     protected $fillable = [
-        'name',
+        'firstName',
+        'lastName',
         'email',
+        'dob',
+        'gender',
         'phone',
         'address',
-        'medical_history'
     ];
-
-    // The attributes that should be hidden for arrays
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
-    // The attributes that should be cast to native types
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    // Define relationships here
-    public function appointments()
+    /* optionally, define relationships to other models here */
+    /* a patient might have many appointments or medical records */
+    public function appointment()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class);
     }
 }
