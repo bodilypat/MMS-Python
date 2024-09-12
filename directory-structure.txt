@@ -1,0 +1,63 @@
+database/
+        migrations/
+                    xxxx_xx_xx_create_patients_table.php 
+                    xxxx_xx_xx_create_appointments_table.php
+                    xxxx_xx_xx_create_doctors_table.php 
+                    xxxx_xx_xx_create_medicalRecord_table.php 
+                    xxxx_xx_xx_create_prescriptions_table.php 
+                    xxxx_xx_xx_create_billings_table.php 
+app/
+    Models/
+          Patient.php
+          Appointment.php 
+          Doctor.php 
+          MedicalRecord_table.php
+          Prescription.php
+          Billing.php
+    Http/
+        Controllers/
+                    PatientController.php 
+                    AppointmentController.php 
+                    DoctorController.php 
+                    MedicalController.php 
+                    PrescriptController.php 
+                    BillingController.php  
+resources/
+         views/
+              layouts/
+                     app.php
+              patients/ 
+                      index.blade.php 
+                      create.blade.php 
+                      edit.blade.php 
+                      show.blade.php 
+              appointments/ 
+                          index.blade.php 
+                          create.blade.php  
+                          edit.blade.php 
+                          show.blade.php 
+              doctors/ 
+                      index.blade.php 
+                      create.blade.php 
+                      edit.blade.php 
+                      show.blade.php 
+              medicalRecords/ 
+                      index.blade.php 
+                      create_blade.php 
+                      edit_blade.php 
+                      show.blade.php 
+              prescription/ 
+                      index.blade.php 
+                      create.blade.php 
+                      edit.blade.php 
+                      show.blade.php 
+              billing/ 
+                      index.blade.php 
+                      create.blade.php 
+                      edit.blade.php 
+                      show.blade.php 
+routes/ 
+      web.php 
+
+              
+
