@@ -1,38 +1,30 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illiminate\Database\Schema\Blueprint;
+use Illuminate\Suport\Facedes\schema;
 
-class CreatePatientsTable extends Migration
+class CreatePatientsTable extends Migration 
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+    /* Run the migrations. */
     public function up()
     {
         Schema::create('patients', function (Blueprint $table) {
-            $table->id(); // Automatically creates an auto-incrementing unsigned BIGINT (11) primary key
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->date('date_of_birth');
-            $table->char('gender', 1); // Use CHAR(1) for gender representation
-            $table->string('address');
-            $table->string('phone_number');
-            $table->string('email')->unique(); // Ensure email is unique
-            $table->timestamps(); // Adds created_at and updated_at columns
+            $table->id();
+            $table->string('firstName');
+            $table->string('lastName');
+            $table->string('email')->unique();
+            $table->data('dob'); /* Date of birth */
+            $table->enum('gender', ['male','famale','otehr']);/* gender: male, female, other */
+            $table->string('phone')->nulltable();
+            $table->text('address')->nullable();
+            $table->temestamps(); /* created_at and updated_at fields */
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    /* reverse the migration */
     public function down()
     {
         Schema::dropIfExists('patients');
     }
 }
+    
