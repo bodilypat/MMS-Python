@@ -1,34 +1,30 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprice;
 use Illuminate\Support\Facades\Schema;
 
 class CreateMedicalRecordsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+    /* return the migration */
     public function up()
     {
-        Schema::create('medical_records', function (Blueprint $table) {
-            $table->id(); // Auto-incrementing ID
-            $table->foreignId('patient_id')->constrained()->onDelete('cascade'); // Foreign key to patients table
-            $table->foreignId('doctor_id')->constrained()->onDelete('cascade'); // Foreign key to doctors table
-            $table->date('record_date'); // Date of the medical record
-            $table->text('record_details'); // Details of the medical record
-            $table->string('record_type'); // Type of the record (diagnosis, treatment, history)
-            $table->timestamps(); // Created at and updated at timestamps
+        Schema::create('medical_record', function (blueprint $table){
+            $table->id(); 
+            $table->unsignedBigInteger('patient_in');
+            $table->unsignedBigInteger('doctor_id')->nullable();
+            $table->text('diagnosis');
+            $table->text('teatment')->nullable();
+            $table->('medications')->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamps();
+
+            /* define forien key constrains */
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
+            $table->foreign('doctor_id')->references('id')->on('doctor')->onDelete('set null');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    /* Reversse the migations */
     public function down()
     {
         Schema::dropIfExists('medical_records');
