@@ -1,11 +1,11 @@
 database/
         migrations/
-                    xxxx_xx_xx_create_patients_table.php 
-                    xxxx_xx_xx_create_appointments_table.php
-                    xxxx_xx_xx_create_doctors_table.php 
-                    xxxx_xx_xx_create_medicalRecord_table.php 
-                    xxxx_xx_xx_create_prescriptions_table.php 
-                    xxxx_xx_xx_create_billings_table.php 
+                    create_patients_table.php 
+                    create_appointments_table.php
+                    create_doctors_table.php 
+                    create_medicalRecord_table.php 
+                    create_prescriptions_table.php 
+                    create_billings_table.php 
 app/
     Models/
           Patient.php
