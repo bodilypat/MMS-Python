@@ -7,102 +7,84 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of patients.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        $patients = Patient::all(); // Fetch all patients
+        /* Get all patient */
+        $patients = Patient::all();
+
+        /* Return the view with patients data */
         return view('patients.index', compact('patients'));
     }
 
-    /**
-     * Show the form for creating a new patient.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /* Show form creating a new patient */
     public function create()
     {
+        /* Return the view to create a new patient */
         return view('patients.create');
     }
 
-    /**
-     * Store a newly created patient in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    /* Store a newly created patient in storage */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:patients,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'dob' => 'required|date',
+        $validated = $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName'  => 'required|string|max:255',
+            'email'     => 'required|email|unique:patients,email',
+            'dob'       => 'required|date',
+            'gender'    => 'required|in:male,female,other',
+            'phone'     => 'required|string|max:15',
+            'address'   => 'nullable|string|max:255',
         ]);
 
-        Patient::create($request->all());
+        patient::create($validated);
 
-        return redirect()->route('patients.index')->with('success', 'Patient added successfully.');
+        return redirect()->route('patients.index')->with('success', 'Patient created successfully.');
     }
 
-    /**
-     * Display the specified patient.
-     *
-     * @param \App\Models\Patient $patient
-     * @return \Illuminate\Http\Response
-     */
+    /* Display the specified patient */
     public function show(Patient $patient)
     {
-        return view('patients.show', compact('patient'));
+        //return the view to show a specific patient
+        return view('patient.show', compact('patient'));
     }
 
-    /**
-     * Show the form for editing the specified patient.
-     *
-     * @param \App\Models\Patient $patient
-     * @return \Illuminate\Http\Response
-     */
+    /* Show the form for editing the specified patient. */
     public function edit(Patient $patient)
     {
+        //Return the view to edit a patient
         return view('patients.edit', compact('patient'));
     }
 
-    /**
-     * Update the specified patient in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Patient $patient
-     * @return \Illuminate\Http\Response
-     */
+    /* Update the specified patient in storage*/
     public function update(Request $request, Patient $patient)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:patients,email,' . $patient->id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'dob' => 'required|date',
+        //Validate the request date
+        $validated = $request->validate([
+
+            'firstName' => 'required|string|max:255',
+            'lastName'  => 'required|string|max:255',
+            'email'     => 'required|email|unique:patients,email',
+            'dob'       => 'required|date',
+            'gender'    => 'required|in:male,female,other',
+            'phone'     => 'required|string|max:15',
+            'address'   => 'nullable|string|max:255',
+            
         ]);
 
-        $patient->update($request->all());
+        // Update the patient's information with the validated data
+        $patient->update($validate);
 
-        return redirect()->route('patients.index')->with('success', 'Patient updated successfully.');
+        //Redirect back to the patient list with a success message
+        return redirect()->route('patient.index')->with('success','patient updated successfully');
     }
 
-    /**
-     * Remove the specified patient from storage.
-     *
-     * @param \App\Models\Patient $patient
-     * @return \Illuminate\Http\Response
-     */
+    /* Remove the specified patient from storage. */
     public function destroy(Patient $patient)
     {
         $patient->delete();
 
-        return redirect()->route('patients.index')->with('success', 'Patient deleted successfully.');
+        //Redirect back to the patients list with a success message
+        return redirect()->route('patients.index')->with('success', 'Patient deleted successfull!');
     }
 }
