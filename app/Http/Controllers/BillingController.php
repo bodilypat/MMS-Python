@@ -1,107 +1,105 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Billing;
-use App\Models\Patient; // Assuming you have a Patient model
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
-class BillingController extends Controller
+class BillingController extends Controller 
 {
-    /**
-     * Display a listing of the billings.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // Display a listing of all billss.
     public function index()
     {
+
+        // Fetch all bills with the patient relationship
         $billings = Billing::with('patient')->get();
+
+        // Return the view with the list of bills
         return view('billings.index', compact('billings'));
     }
 
-    /**
-     * Show the form for creating a new billing.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /* Show the form for creating a new bills. */
     public function create()
     {
+
+        // Fetch all patients for the billing form
         $patients = Patient::all();
+
+        // Return the form to create a new all
         return view('billings.create', compact('patients'));
     }
 
-    /**
-     * Store a newly created billing in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    /* Store a newly created bill in the database */
     public function store(Request $request)
     {
-        $request->validate([
+
+        // Validate the request data 
+        $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'amount' => 'required|numeric|min:0',
-            'billing_date' => 'required|date',
-            'description' => 'nullable|string',
+            'service'    => 'required|string|max:255',
+            'amount'     => 'required|numeric',
+            'status'     => 'required|string|max:50',
+            'due_date'   => 'required|date',
+            'notess'     => 'nullable|string|max:500',
         ]);
 
-        Billing::create($request->all());
+        // Create a new billing record in the database
+        billing::create($validated);
 
-        return redirect()->route('billings.index')->with('success', 'Billing record added successfully.');
+        // Redirect to the billing list with a success message
+        return redirect()->route('billings.index')->with('success','Billing created successfully.');
     }
 
-    /**
-     * Display the specified billing.
-     *
-     * @param \App\Models\Billing $billing
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Billing $billing)
+    /* Display the specified bill */
+    public function show(billing $billing)
     {
-        return view('billings.show', compact('billing'));
+
+        // Return the view to show the details of a specified bill
+        Return view('billings.show', compact('billing'));
     }
 
-    /**
-     * Show the form for editing the specified billing.
-     *
-     * @param \App\Models\Billing $billing
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Billing $billing)
+    /* Show the form for editing the specified bill */
+    public function edit(billing $billing)
     {
+
+        // Fetch all patients for the form
         $patients = Patient::all();
+
+        // Return the form to edit an existing billing record
         return view('billings.edit', compact('billing', 'patients'));
     }
 
-    /**
-     * Update the specified billing in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Billing $billing
-     * @return \Illuminate\Http\Response
-     */
+    /* Update the specified bill in storage */
     public function update(Request $request, Billing $billing)
     {
-        $request->validate([
+
+        // Validate the updated data
+        $validated = $request->validate([
             'patient_id' => 'required|exists:patients,id',
-            'amount' => 'required|numeric|min:0',
-            'billing_date' => 'required|date',
-            'description' => 'nullable|string',
+            'service'    => 'required|string|max:255',
+            'amount'     => 'required|numeric',
+            'status'     => 'required|string|max:50',
+            'due_date'   => 'required|date',
+            'notess'     => 'nullable|string|max:500',
         ]);
 
-        $billing->update($request->all());
+        // Update the billings record in the database
+        $billing->update($validated);
 
-        return redirect()->route('billings.index')->with('success', 'Billing record updated successfully.');
+        // Redirect to the billing list with a success message
+        return redirect()->route('billings.index')->with('success','billing updated successfully.');
     }
 
-    /**
-     * Remove the specified billing from storage.
-     *
-     * @param \App\Models\Billing $billing
-     * @return \Illuminate\Http\Response
-     */
+    /* Remove the specified bill from storage */
     public function destroy(Billing $billing)
     {
+
+        // Delete the billing record
         $billing->delete();
 
-        return redirect()->route('billings.index')->with('success', 'Billing record deleted successfully.');
+        // Redirect to billing list with a success message
+        return redirect()->route('billings.index')->with('success','Billing deleted successfully.');
     }
 }
