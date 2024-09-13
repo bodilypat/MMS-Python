@@ -1,112 +1,106 @@
-
 <?php
 
 namespace App\Http\Controllers;
 
-use App\Models\MedicalRecord;
-use App\Models\Patient; // Assuming you have a Patient model
+use App\Models\MidicalRecord;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
-class MedicalRecordsController extends Controller
+class MedicalRecordController extends Controller
 {
-    /**
-     * Display a listing of medical records.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    /* Display a listing of medical record */
+
     public function index()
     {
-        $medicalRecords = MedicalRecord::with('patient')->get(); // Assuming you have a relationship
-        return view('medical-records.index', compact('medicalRecords'));
+
+        // Fetch all medical records with the paitent relationship
+        $medicalRecord = MedicalRecord::with('patient')->get();
+
+        // Return the view with the list of medical records
+        return view('medical_records.index', compact('medicalRecords'));
     }
 
-    /**
-     * Show the form for creating a new medical record.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /* show the for creating a new medical record. */
     public function create()
     {
-        $patients = Patient::all(); // Fetch patients for dropdown
-        return view('medical-records.create', compact('patients'));
+
+        // Fetch all patient for the medical record form
+        $patients = Patient::all();
+
+        // Return the form to create a new medical record
+        return view('medical_records.create', compact('patients'));
     }
 
-    /**
-     * Store a newly created medical record in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
+    /* Store a newly created medical record in storage */
     public function store(Request $request)
     {
-        $request->validate([
-            'patient_id' => 'required|exists:patients,id',
-            'date' => 'required|date',
-            'diagnosis' => 'required|string',
-            'treatment' => 'nullable|string',
-            'notes' => 'nullable|string',
+
+        // Validate the request data
+        $valdiated = $request->validate([
+            'patient_id'   => 'required|exists:patients,id',
+            'doctor_id'    => 'nullable|exists:doctor,id',
+            'dianosis'     => 'required|string',
+            'treatment'    => 'nullable|string',
+            'medications'  => 'nullable|string',
+            'notes'        => 'nullable|string',
         ]);
 
-        MedicalRecord::create($request->all());
+        // Create a new medicl record in the database
+        MedicalRecord::create($validated);
 
-        return redirect()->route('medical-records.index')->with('success', 'Medical record added successfully.');
+        // Redirect to the medical records list with a success message
+        return redirect()->route('medical_records.index')->with('success', 'Midical record created successfully.');
     }
 
-    /**
-     * Display the specified medical record.
-     *
-     * @param \App\Models\MedicalRecord $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
+    /* Display the specified medical record */
     public function show(MedicalRecord $medicalRecord)
     {
-        return view('medical-records.show', compact('medicalRecord'));
+
+        // Return the view to show the details of a specified medical record
+        return view('medical_records.show', compact('medicalRecord'));
     }
 
-    /**
-     * Show the form for editing the specified medical record.
-     *
-     * @param \App\Models\MedicalRecord $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
+    /* show the form for editing the specified medical record */
     public function edit(MedicalRecord $medicalRecord)
     {
-        $patients = Patient::all(); // Fetch patients for dropdown
-        return view('medical-records.edit', compact('medicalRecord', 'patients'));
+
+        // Fetch all patients for the form
+        $patients = Patient::all();
+
+        // Return the form to edit an existing medical record 
+        return view('medical_records.edit', compact('medicalRecord','patients'));
     }
 
-    /**
-     * Update the specified medical record in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\MedicalRecord $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
+    /* Update the specified medical record in storage. */
     public function update(Request $request, MedicalRecord $medicalRecord)
     {
-        $request->validate([
-            'patient_id' => 'required|exists:patients,id',
-            'date' => 'required|date',
-            'diagnosis' => 'required|string',
-            'treatment' => 'nullable|string',
-            'notes' => 'nullable|string',
+
+        // Validate the update data
+        $validated = $request->validate([
+            'patient_id'   => 'required|exists:patients,id',
+            'doctor_id'    => 'nullable|exists:doctor,id',
+            'dianosis'     => 'required|string',
+            'treatment'    => 'nullable|string',
+            'medications'  => 'nullable|string',
+            'notes'        => 'nullable|string',
         ]);
 
-        $medicalRecord->update($request->all());
+        // Update the medical record in the database
+        $medicalRecord->update($validated);
 
-        return redirect()->route('medical-records.index')->with('success', 'Medical record updated successfully.');
+        // Redirect to the medical records list with a success message
+        return redirect()->route('medical_records.index')->with('success', 'Medical record updated successfully.');
     }
 
-    /**
-     * Remove the specified medical record from storage.
-     *
-     * @param \App\Models\MedicalRecord $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
+    /* Romove the specified medical record from storage. */
     public function destroy(MedicalRecord $medicalRecord)
     {
+
+        // Delete the medical record from the database
         $medicalRecord->delete();
 
-        return redirect()->route('medical-records.index')->with('success', 'Medical record deleted successfully.');
+        // Redirect to the medical records list with a success message
+        return redirect()->route('medical_records.index')->with('success', 'Medical record deleted successfully.');
     }
 }
