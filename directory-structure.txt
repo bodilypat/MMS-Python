@@ -18,14 +18,15 @@ app/
                 User.php
     Http/
         Controllers/
+                auth/
+                        LoginController
                 PatientController.php 
                 AppointmentController.php 
                 DoctorController.php 
                 MedicalController.php 
                 PrescriptController.php 
                 BillingController.php  
-                auth/
-                        LoginController.php
+                
 resources/
          views/
                 welcome.blade.php
