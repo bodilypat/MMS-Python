@@ -10,54 +10,54 @@ use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\BillingController;
 
     Route::resource('patients', PatientController::class);
-    /* GET /patients(index) -list all patients
-       GET/patients/create (create) -show a form to create a patient
-       POST/patients(store) -save a new patient
-       GET/patients/{patients} (show) -show a specific patient
-       GET/patients/{patients}/edit (edit) -show a form to edit a patient
-       PUT/patients/{patients} (update) -update a patient
-       DELETE/patients/{patient} (destroy) -delete a patient
-     */
+
+    Route::get('patietns', [PatientController::class,'index']);
+    Route::get('patients/{id}', [PatientController::class,'show']);
+    Route::get('patients/create', [PatientController::class,'create']);
+    Route::post('patients', [PatientController::class,'store']);
+    Route::get('patients/{id}/edit', [PatientControll::class,'edit']);
+    Route::put('patients/{id}', [patientController::class,'update']);
+    Route::delete('patient/{id}', [PatientController::class,'destroy']);
+    
     Route::resource('appointements',AppointmentController::class);
-    /* GET/appointments/ -list all appointments.
-       GET/appointments/create  -show a form to create a new appointment 
-       POST/appointments/ -store a new appointment 
-       GET/appointments/{appointment} -show details of a specific appointment 
-       GET/appointments/{appointment}/edit -show a form to edit an appointment
-       PUT/appointments/{appointment} -update an appointment
-       DELETE/appointments/{appointment} -delete an appointment */
+
+    Route::get('appointments', [AppointmentController::class,'index']);
+    Route::get('appointments/{id}', [AppointmentController::class,'show']);
+    Route::get('appointments/create', [AppointmentController::class,'create']);
+    Route::post('appointmnets', [AppointmentController::class,'store']);
+    Route::get('appointments/{id}/edit', [AppointmentControll::class,'edit']);
+    Route::put('appointments/{id}', [AppointmentController::class,'update']);
+    Route::delete('appointments/{id}', [AppointmentController::class,'destroy']);
+    
     Route::resource('doctors', DoctorController::class);
 
-    /* GET/doctors -List all doctors.
-       GET/doctors/create -Show a form to create a new doctor. 
-       POST/doctors -Store a new doctor.
-       GET/doctors/{doctor} -Show a specific doctor.
-       GET/doctors/{doctor}/edit -Show a form to edit a doctor.
-       PUT /doctors/{doctor} -Update a doctor.
-       DELETE/doctors/{doctor} -Delete a doctor. 
-   */ 
-
+    Route::get('doctors', [DoctorController::class,'index']);
+    Route::get('doctors/{id}', [DoctorController::class,'show']);
+    Route::get('doctors/create', [DoctorController::class,'create']);
+    Route::post('doctors', [DoctorController::class,'store']);
+    Route::get('doctors/{id}/edit', [DoctorControll::class,'edit']);
+    Route::put('doctors/{id}', [DoctorController::class,'update']);
+    Route::delete('doctors/{id}', [DoctorController::class,'destroy']);
+    
     Route::resource('medical-record',MedicalRecordController::class);
 
-    /* GET/medical-records -L all medicalRecord.
-       GET/medical-records/create -Show a form to create a new medicalRecord
-       POST/medical-records -Store a new medicalRecord.
-       GET/medical-records/{midicalRecord} -Show a specific MedicalRecord.
-       GET/medical-records/{midicalRecord}/edit -Show a form to edit a MedicalRecord.
-       PUT/medical-records/{medicalRecord} -Update a MedicalRecord.
-       DELETE/medical-records/{medicalRecord} -Delete a MedicalRecord
-       */
-
+    Route::get('medical-records', [MedicalRecordController::class,'index']);
+    Route::get('medical-records/{id}', [MedicalRecordController::class,'show']);
+    Route::get('medical-records/create', [MedicalRecordController::class,'create']);
+    Route::post('medical-records', [MedicalRecordController::class,'store']);
+    Route::get('medical-recordss/{id}/edit', [MedicalRecordControll::class,'edit']);
+    Route::put('medical-records/{id}', [MedicalRecordController::class,'update']);
+    Route::delete('medical-records/{id}', [MedicalRecordController::class,'destroy']);
+    
     Route::resource('prescriptions', PrescriptionController::class);
 
-    /* GET/prescriptions -List all prescriptions.
-       GET/prescriptions/create -Show a form to create a new prescription.
-       POST/prescriptions -Store a new prescription.
-       GET/prescriptions/{prescription} -Show a specific prescription.
-       GET/prescription/{prescription}/edit -Show a form to edit a prescription
-       PUT/prescriptions/{prescription} -Update a prescription.
-       DELETE/prescriptions/{prescription} -Delete a prescription.
-       */
+    Route::get('prescriptions', [PrescriptionController::class,'index']);
+    Route::get('Prescriptions/{id}', [PrescriptionController::class,'show']);
+    Route::get('Prescriptions/create', [PrescriptionController::class,'create']);
+    Route::post('Prescriptions', [PrescriptionController::class,'store']);
+    Route::get('Prescriptions/{id}/edit', [PrescriptionControll::class,'edit']);
+    Route::put('Prescriptions/{id}', [PrescriptionController::class,'update']);
+    Route::delete('Prescriptions/{id}', [PrescriptionController::class,'destroy']);
 
-    route::resource('prescription', BillingController::class);
+    
     
