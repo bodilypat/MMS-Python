@@ -1,57 +1,65 @@
 database/
         migrations/
-                    create_patients_table.php 
-                    create_appointments_table.php
-                    create_doctors_table.php 
-                    create_medicalRecord_table.php 
-                    create_prescriptions_table.php 
-                    create_billings_table.php 
+                create_patients_table.php 
+                create_appointments_table.php
+                create_doctors_table.php 
+                create_medicalRecord_table.php 
+                create_prescriptions_table.php     
+                create_billings_table.php 
 app/
     Models/
-          Patient.php
-          Appointment.php 
-          Doctor.php 
-          MedicalRecord_table.php
-          Prescription.php
-          Billing.php
+                Dashboard.php
+                Patient.php
+                Appointment.php 
+                Doctor.php 
+                MedicalRecord.php
+                Prescription.php
+                Billing.php
+                User.php
     Http/
         Controllers/
-                    PatientController.php 
-                    AppointmentController.php 
-                    DoctorController.php 
-                    MedicalController.php 
-                    PrescriptController.php 
-                    BillingController.php  
+                PatientController.php 
+                AppointmentController.php 
+                DoctorController.php 
+                MedicalController.php 
+                PrescriptController.php 
+                BillingController.php  
+                auth/
+                        LoginController.php
 resources/
          views/
-              layouts/
-                     app.php
-              patients/ 
+                welcome.blade.php
+                dashboard.blade.php
+
+                layouts/
+                     app.blade.php
+                     gest.blade.php
+                patients/ 
                       index.blade.php 
                       create.blade.php 
                       edit.blade.php 
                       show.blade.php 
-              appointments/ 
+                appointments/ 
                           index.blade.php 
                           create.blade.php  
                           edit.blade.php 
                           show.blade.php 
-              doctors/ 
+                doctors/ 
                       index.blade.php 
                       create.blade.php 
                       edit.blade.php 
                       show.blade.php 
-              medicalRecords/ 
+                medical-records/ 
                       index.blade.php 
                       create_blade.php 
                       edit_blade.php 
                       show.blade.php 
-              prescription/ 
+                prescriptions/ 
                       index.blade.php 
                       create.blade.php 
                       edit.blade.php 
                       show.blade.php 
-              billing/ 
+                billings/ 
                       index.blade.php 
                       create.blade.php 
                       edit.blade.php 
