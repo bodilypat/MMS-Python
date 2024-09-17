@@ -1,6 +1,6 @@
 <?php 
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
@@ -8,6 +8,14 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\BillingController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/' function () {
+    return view('welcome');
+})->middleware('gest');
+Route::post('/',[LoginController::class,'Login'])->name('login');
+Route::post('logout', [LoginController::class,'logout'])->name('logout');
+Route::post('/Change-password', [LoginController::,'change_password'])->name('change_password');
 
     Route::resource('patients', PatientController::class);
 
