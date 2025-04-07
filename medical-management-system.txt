@@ -1,0 +1,27 @@
+medical-management-system/
+├── backend/                     # Python Backend (API)
+│   ├── api/                     # API endpoints for CRUD operations
+│   │   ├── doctors.py           # Endpoint for handling doctor-related requests
+│   │   ├── patients.py          # Endpoint for handling patient-related requests
+│   │   ├── appointments.py      # Endpoint for handling appointment-related requests
+│   │   ├── prescriptions.py     # Endpoint for handling prescription-related requests
+│   │   ├── payments.py          # Endpoint for handling payment-related requests
+│   │   ├── pharmacies.py        # Endpoint for handling pharmacies-related requests
+│   │   ├── insurances.py        # Endpoint for handling insurance-related requests
+│   │   ├── users.py             # Endpoint for handling user-related requests
+│   │   └── ...                  # Other API files for various operations
+│   ├── config/                  # Configuration files (e.g., database connection)
+│   │   └── dbconnect.py         # Database connection
+│   └── .htaccess                # Apache settings if using Apache server (optional)
+├── frontend/                    # Laravel Frontend (HTML, JS, CSS)
+│   ├── app/                     # Laravel App code
+│   │   ├── routes/              # Laravel routes and controllers
+│   │   ├── views/               # Blade templates (Laravel views)
+│   │   ├── css/                 # CSS files for frontend
+│   │   └── js/                  # JavaScript files for frontend (AJAX calls)
+│   ├── public/                  # Public assets (images, fonts, etc.)
+│   │   └── logo.png             # Example logo
+│   ├── .gitignore               # Git ignore file (optional)
+│   └── README.md                # Project readme (optional)
+└── database/                    # Database-related files and migrations
+    └── migrations/     
