@@ -1,27 +1,65 @@
 medical-management-system/
-├── backend/                     # Python Backend (API)
-│   ├── api/                     # API endpoints for CRUD operations
-│   │   ├── doctors.py           # Endpoint for handling doctor-related requests
-│   │   ├── patients.py          # Endpoint for handling patient-related requests
-│   │   ├── appointments.py      # Endpoint for handling appointment-related requests
-│   │   ├── prescriptions.py     # Endpoint for handling prescription-related requests
-│   │   ├── payments.py          # Endpoint for handling payment-related requests
-│   │   ├── pharmacies.py        # Endpoint for handling pharmacies-related requests
-│   │   ├── insurances.py        # Endpoint for handling insurance-related requests
-│   │   ├── users.py             # Endpoint for handling user-related requests
-│   │   └── ...                  # Other API files for various operations
-│   ├── config/                  # Configuration files (e.g., database connection)
-│   │   └── dbconnect.py         # Database connection
-│   └── .htaccess                # Apache settings if using Apache server (optional)
-├── frontend/                    # Laravel Frontend (HTML, JS, CSS)
-│   ├── app/                     # Laravel App code
-│   │   ├── routes/              # Laravel routes and controllers
-│   │   ├── views/               # Blade templates (Laravel views)
-│   │   ├── css/                 # CSS files for frontend
-│   │   └── js/                  # JavaScript files for frontend (AJAX calls)
-│   ├── public/                  # Public assets (images, fonts, etc.)
-│   │   └── logo.png             # Example logo
-│   ├── .gitignore               # Git ignore file (optional)
-│   └── README.md                # Project readme (optional)
-└── database/                    # Database-related files and migrations
-    └── migrations/     
+├── backend/                      # PHP Backend (API)
+│   ├── app/                      # Laravel App code (Controllers, Models, etc.)
+│   │   ├── Http/                 
+│   │   │   ├── Controllers/      # API controllers for each resource
+│   │   │   │   ├── DoctorController.php
+│   │   │   │   ├── PatientController.php
+│   │   │   │   ├── AppointmentController.php
+│   │   │   │   ├── PrescriptionController.php
+│   │   │   │   ├── PaymentController.php
+│   │   │   │   ├── PharmacyController.php
+│   │   │   │   ├── InsuranceController.php
+│   │   │   │   ├── UserController.php
+│   │   │   │   └── ...           # Other controllers for various resources
+│   │   │   └── Middleware/       # Middlewares (e.g., Auth, CORS, etc.)
+│   │   ├── Models/               # Laravel Eloquent Models for each resource
+│   │   │   ├── Doctor.php
+│   │   │   ├── Patient.php
+│   │   │   ├── Appointment.php
+│   │   │   ├── Prescription.php
+│   │   │   ├── Payment.php
+│   │   │   ├── Pharmacy.php
+│   │   │   ├── Insurance.php
+│   │   │   ├── User.php
+│   │   │   └── ...               # Other Models for various resources
+│   ├── routes/                   # Laravel routes (API routes here)
+│   │   └── api.php               # API routes file
+│   ├── database/                 # Database-related files and migrations
+│   │   ├── migrations/           # Migration files
+│   │   │   ├── 2025_01_01_000000_create_doctors_table.php
+│   │   │   ├── 2025_01_01_000000_create_patients_table.php
+│   │   │   ├── 2025_01_01_000000_create_appointments_table.php
+│   │   │   ├── 2025_01_01_000000_create_medical_records_table.php
+│   │   │   ├── 2025_01_01_000000_create_lab_tests_table.php
+│   │   │   ├── 2025_01_01_000000_create_prescriptions_table.php
+│   │   │   ├── 2025_01_01_000000_create_payments_table.php
+│   │   │   ├── 2025_01_01_000000_create_insurances_table.php
+│   │   │   ├── 2025_01_01_000000_create_users_table.php
+│   │   │   └── ...               # Other migration files
+│   ├── config/                   # Configuration files (e.g., database, API settings)
+│   │   └── database.php          # Database connection
+│   ├── .env                      # Environment file (for DB, API keys, etc.)
+│   └── .gitignore                # Git ignore file (optional)
+│
+├── frontend/                     # Laravel Frontend (HTML, JS, CSS)
+│   ├── resources/                
+│   │   ├── views/                # Blade templates (Laravel views)
+│   │   │   ├── doctor.blade.php
+│   │   │   ├── patient.blade.php
+│   │   │   ├── appointment.blade.php
+│   │   │   ├── prescription.blade.php
+│   │   │   ├── payment.blade.php
+│   │   │   ├── pharmacy.blade.php
+│   │   │   ├── insurance.blade.php
+│   │   │   ├── user.blade.php
+│   │   │   └── ...               # Other views for various resources
+│   │   ├── css/                  # CSS files for frontend
+│   │   ├── js/                   # JavaScript files (AJAX calls, etc.)
+│   │   └── sass/                 # SCSS files (optional)
+│   ├── public/                   # Public assets (images, fonts, etc.)
+│   │   └── logo.png              # Example logo
+│   ├── .gitignore                # Git ignore file (optional)
+│   └── README.md                 # Project readme (optional)
+│
+└── .gitignore                    # Git ignore file for the whole project (optional)
