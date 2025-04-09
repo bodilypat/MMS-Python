@@ -1,14 +1,19 @@
 medical-management-system/
 ├── backend/                      # PHP Backend (API)
 │   ├── app/                      # Laravel App code (Controllers, Models, etc.)
+│   │   ├── Console/              # Artisan Commands (Optional, for custom CLI commands)
+│   │   ├── Events/               # Event classes (for event-driven architecture)
+│   │   ├── Exceptions/           # Custom exception handling
 │   │   ├── Http/                 
 │   │   │   ├── Controllers/      # API controllers for each resource
 │   │   │   │   ├── DoctorController.php
 │   │   │   │   ├── PatientController.php
 │   │   │   │   ├── AppointmentController.php
+│   │   │   │   ├── LabTestController.php
+│   │   │   │   ├── MedicalRecordController.php
 │   │   │   │   ├── PrescriptionController.php
-│   │   │   │   ├── PaymentController.php
 │   │   │   │   ├── PharmacyController.php
+│   │   │   │   ├── PaymentController.php
 │   │   │   │   ├── InsuranceController.php
 │   │   │   │   ├── UserController.php
 │   │   │   │   └── ...           # Other controllers for various resources
@@ -19,12 +24,19 @@ medical-management-system/
 │   │   │   ├── Appointment.php
 │   │   │   ├── Prescription.php
 │   │   │   ├── Payment.php
+│   │   │   ├── LabTest.php
+│   │   │   ├── MedicalRecord.php
 │   │   │   ├── Pharmacy.php
 │   │   │   ├── Insurance.php
 │   │   │   ├── User.php
 │   │   │   └── ...               # Other Models for various resources
+│   │   ├── Providers/            # Service providers (optional, if you have custom service logic)
+│   │   ├── Services/             # Business logic layer (optional, for cleaner code)
+│   │   └── Traits/               # Traits for reusable code (optional)
 │   ├── routes/                   # Laravel routes (API routes here)
-│   │   └── api.php               # API routes file
+│   │   ├── api.php               # API routes file
+│   │   ├── web.php               # Web routes (for frontend access, if needed)
+│   │   └── channels.php          # Broadcasting channels (optional, for real-time events)
 │   ├── database/                 # Database-related files and migrations
 │   │   ├── migrations/           # Migration files
 │   │   │   ├── 2025_01_01_000000_create_doctors_table.php
@@ -38,9 +50,12 @@ medical-management-system/
 │   │   │   ├── 2025_01_01_000000_create_users_table.php
 │   │   │   └── ...               # Other migration files
 │   ├── config/                   # Configuration files (e.g., database, API settings)
-│   │   └── database.php          # Database connection
+│   │   ├── database.php          # Database connection
+│   │   ├── cors.php              # CORS configuration (for API)
+│   │   └── ...                   # Other configuration files (e.g., API, mail, session)
 │   ├── .env                      # Environment file (for DB, API keys, etc.)
-│   └── .gitignore                # Git ignore file (optional)
+│   ├── .gitignore                # Git ignore file (optional)
+│   └── composer.json             # Composer dependencies file
 │
 ├── frontend/                     # Laravel Frontend (HTML, JS, CSS)
 │   ├── resources/                
@@ -49,6 +64,8 @@ medical-management-system/
 │   │   │   ├── patient.blade.php
 │   │   │   ├── appointment.blade.php
 │   │   │   ├── prescription.blade.php
+│   │   │   ├── lab_test.blade.php
+│   │   │   ├── medical_record.blade.php
 │   │   │   ├── payment.blade.php
 │   │   │   ├── pharmacy.blade.php
 │   │   │   ├── insurance.blade.php
@@ -56,10 +73,14 @@ medical-management-system/
 │   │   │   └── ...               # Other views for various resources
 │   │   ├── css/                  # CSS files for frontend
 │   │   ├── js/                   # JavaScript files (AJAX calls, etc.)
-│   │   └── sass/                 # SCSS files (optional)
+│   │   ├── sass/                 # SCSS files (optional)
+│   │   ├── img/                  # Images (e.g., logos, icons)
+│   │   └── fonts/                # Custom fonts (if any)
 │   ├── public/                   # Public assets (images, fonts, etc.)
 │   │   └── logo.png              # Example logo
 │   ├── .gitignore                # Git ignore file (optional)
-│   └── README.md                 # Project readme (optional)
+│   ├── README.md                 # Project readme (optional)
+│   ├── package.json              # Node.js dependencies (for frontend tools like Laravel Mix)
+│   └── webpack.mix.js            # Laravel Mix configuration (for compiling assets)
 │
 └── .gitignore                    # Git ignore file for the whole project (optional)
