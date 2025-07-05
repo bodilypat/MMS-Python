@@ -87,7 +87,7 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │   │   │	│	├── patients.py
 │   │   │   │	│	├── doctors.py
 │   │   │   │	│	├── appointments.py
-│   │   │  	│	│   └── billing.py
+│   │   │   │   │   └── billing.py
 │   │   │   │   └── deps.py                       
 │   │   ├── core/   
 │   │   │   ├── config.py                             
