@@ -99,11 +99,11 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │   │   │  	├── appointment.py
 │   │   │   │ 	└── billing.py 
 │   │   │   ├── schemas/
-│   │   │   │  	├── user.py					# Common user-related schemas (Auth, Base user)
-│   │   │   │  	├── patient.py              # Patient request/response models
-│   │   │   │ 	├── doctor.py               # Doctor request/response models
-│   │   │   │  	├── appointment.py          # Appointment creation/view/update
-│   │   │   │ 	└── billing.py              # Invoice, Payment, billing schemas
+│   │   │   │  	├── user.py					          # Common user-related schemas (Auth, Base user)
+│   │   │   │  	├── patient.py                        # Patient request/response models
+│   │   │   │ 	├── doctor.py                         # Doctor request/response models
+│   │   │   │  	├── appointment.py                    # Appointment creation/view/update
+│   │   │   │ 	└── billing.py                        # Invoice, Payment, billing schemas
 │   │   │   ├── services/
 │   │   │   │  	├── auth.py
 │   │   │   │  	├── patient.py
