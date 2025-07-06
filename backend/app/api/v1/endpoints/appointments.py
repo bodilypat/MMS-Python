@@ -2,12 +2,13 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import List, Optional
 
 
 from app.schemas import AppointmentCreate, AppointmentOut
 from app.services.appointment import create_appointment, list_appointment, get_appointment_by_id
 from app.api.v1 import deps 
-from typing import List, Optional
+
 
 router = APIRouter(prefix="/appointments", tags=["Appointments"])
 
@@ -28,7 +29,7 @@ router = APIRouter(prefix="/appointments", tags=["Appointments"])
        ):
         return list_appointments(
             db=db,
-            skip=limit,
+            skip=skip,
             limit=limit,
             doctor_id=doctor_id 
             patient_id=patient_id
@@ -40,7 +41,4 @@ router = APIRouter(prefix="/appointments", tags=["Appointments"])
         raise HTTPException(status_code=404, detail="Appointment not found")
     return appointment
         
-    
-def book_appointment(data: AppointmentCreate):
-	return create_appointment(data)
 	
