@@ -82,7 +82,7 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │   ├── api/
 │   │   │   ├── v1/
 │   │   │   │   ├── router.py
-│   │   │   │   ├── endpoins/
+│   │   │   │   ├── endpoints/
 │   │   │   │	│	├── auth.py
 │   │   │   │	│	├── patients.py
 │   │   │   │	│	├── doctors.py
