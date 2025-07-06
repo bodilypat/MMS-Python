@@ -83,6 +83,7 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │   │   ├── v1/
 │   │   │   │   ├── router.py
 │   │   │   │   ├── endpoints/
+│   │   │   │	│	├── __int__.py
 │   │   │   │	│	├── auth.py
 │   │   │   │	│	├── patients.py
 │   │   │   │	│	├── doctors.py
@@ -90,32 +91,57 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │   │   │   │   └── billing.py
 │   │   │   │   └── deps.py                       
 │   │   ├── core/   
+│   │   │   ├── __int__.py 
 │   │   │   ├── config.py                             
 │   │   │   ├── security.py
+│   │   │   ├── logging.py 
 │   │   │   ├── models/
+│   │   │   │  	├── __int__.py
 │   │   │   │  	├── user.py
 │   │   │   │  	├── patient.py
 │   │   │   │ 	├── doctor.py
 │   │   │   │  	├── appointment.py
 │   │   │   │ 	└── billing.py 
 │   │   │   ├── schemas/
+│   │   │   │  	├── __init__.py
 │   │   │   │  	├── user.py					          # Common user-related schemas (Auth, Base user)
 │   │   │   │  	├── patient.py                        # Patient request/response models
 │   │   │   │ 	├── doctor.py                         # Doctor request/response models
 │   │   │   │  	├── appointment.py                    # Appointment creation/view/update
 │   │   │   │ 	└── billing.py                        # Invoice, Payment, billing schemas
 │   │   │   ├── services/
+│   │   │   │  	├── __init__.py
 │   │   │   │  	├── auth.py
 │   │   │   │  	├── patient.py
 │   │   │   │ 	├── doctor.py
 │   │   │   │  	├── appointment.py
 │   │   │   │ 	└── billings.py   
 │   │   │   ├── db/
+│   │   │   │  	├── __init.py
 │   │   │   │  	├── base.py
 │   │   │   │  	├── session.py
-│   │   │   │ 	└── main.py                                                           
-│   ├── tests/                              
-│   ├── alembic/                              
+│   │   │   │ 	└── main.py         
+│   │   │   ├── middleware/
+│   │   │   │  	├── __init.py
+│   │   │   │ 	└── main.py   
+│   │   │   ├── utils/
+│   │   │   │  	├── __init.py
+│   │   │   │ 	└── helper.py   
+│   │   │   └── main.py                       # Entry point (FastAPI app)                           
+│   ├── alembics/ 
+│   │   ├── versions/  
+│   │   └── env.py                   
+│   ├── tests/  
+│   │   ├── __int__.py  
+│   │   ├── conftest.py
+│   │   ├── api/
+│   │   │   ├── test_auth.py
+│   │   │   ├── test_patients.py
+│   │   │   ├── test_doctors.py
+│   │   │   └── test_appointments.py    
+│   │   └── services/     
+│   │       ├── test_doctors.py
+│   │       └── test_appointments.py                             
 ├── .env                                      
 ├── .htaccess                                 
 ├── composer.json                             
