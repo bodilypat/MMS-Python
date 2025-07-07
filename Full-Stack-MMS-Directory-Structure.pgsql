@@ -94,40 +94,40 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   │   │   ├── __int__.py 
 │   │   │   ├── config.py                             
 │   │   │   ├── security.py
-│   │   │   ├── logging.py 
-│   │   │   ├── models/
-│   │   │   │  	├── __int__.py
-│   │   │   │  	├── user.py
-│   │   │   │  	├── patient.py
-│   │   │   │ 	├── doctor.py
-│   │   │   │  	├── appointment.py
-│   │   │   │ 	└── billing.py 
-│   │   │   ├── schemas/
-│   │   │   │  	├── __init__.py
-│   │   │   │  	├── user.py					          # Common user-related schemas (Auth, Base user)
-│   │   │   │  	├── patient.py                        # Patient request/response models
-│   │   │   │ 	├── doctor.py                         # Doctor request/response models
-│   │   │   │  	├── appointment.py                    # Appointment creation/view/update
-│   │   │   │ 	└── billing.py                        # Invoice, Payment, billing schemas
-│   │   │   ├── services/
-│   │   │   │  	├── __init__.py
-│   │   │   │  	├── auth.py
-│   │   │   │  	├── patient.py
-│   │   │   │ 	├── doctor.py
-│   │   │   │  	├── appointment.py
-│   │   │   │ 	└── billings.py   
-│   │   │   ├── db/
-│   │   │   │  	├── __init.py
-│   │   │   │  	├── base.py
-│   │   │   │  	├── session.py
-│   │   │   │ 	└── main.py         
-│   │   │   ├── middleware/
-│   │   │   │  	├── __init.py
-│   │   │   │ 	└── main.py   
-│   │   │   ├── utils/
-│   │   │   │  	├── __init.py
-│   │   │   │ 	└── helper.py   
-│   │   │   └── main.py                       # Entry point (FastAPI app)                           
+│   │   │   └── logging.py  
+│   │   ├── models/
+│   │   │   ├── __int__.py
+│   │   │   ├── user.py
+│   │   │   ├── patient.py
+│   │   │   ├── doctor.py
+│   │   │   ├── appointment.py
+│   │   │   └── billing.py 
+│   │   ├── schemas/
+│   │   │   ├── __init__.py
+│   │   │   ├── user.py					          # Common user-related schemas (Auth, Base user)
+│   │   │   ├── patient.py                        # Patient request/response models
+│   │   │   ├── doctor.py                         # Doctor request/response models
+│   │   │   ├── appointment.py                    # Appointment creation/view/update
+│   │   │   └── billing.py                        # Invoice, Payment, billing schemas
+│   │   ├── services/
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py
+│   │   │   ├── patient.py
+│   │   │   ├── doctor.py
+│   │   │   ├── appointment.py
+│   │   │   └── billings.py   
+│   │   ├── db/
+│   │   │   ├── __init.py
+│   │   │   ├── base.py
+│   │   │   ├── session.py
+│   │   │   └── main.py         
+│   │   ├── middleware/
+│   │   │   ├── __init.py
+│   │   │   └── main.py   
+│   │   ├── utils/
+│   │   │  	├── __init.py
+│   │   │   └── helper.py   
+│   │   └── main.py                       # Entry point (FastAPI app)                           
 │   ├── alembics/ 
 │   │   ├── versions/  
 │   │   └── env.py                   
