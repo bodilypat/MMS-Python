@@ -12,33 +12,48 @@ from app.api.v1 import deps
 
 router = APIRouter(prefix="/appointments", tags=["Appointments"])
 
-@router.post("/", response_model=AppointmentOut, status_code=201)
-    def book_appointment(
-        data: AppointmentCreate,
-        db: Session = Depends(deps.get_db)
-     ):
-     return create_appointment(db=db, appointment=data)
-
+@router.post("/", response_model=AppointmentOut, status_code=status.HTTP_201_CREATED)
+    def create_appointment(
+        appointment_in: AppointmentCreate,
+        db:session = Depends(get_db)
+        current_user = Depends(get_current_active_user),
+    ):
+        return appointment_service.create_appointment(db=db, appointment_in=appointment_in, user=current_user)
+   
 @router.get("/", response_model=List[AppointmentOut])
-    def get_all_appointments(
-            db: Session = Depends(deps.get_db),
-            doctor_id: Optional[str] = None, 
-            patient_id: Optional[str] = None, 
-            skip: int = 0,
-            limit: int = 100 
-       ):
-        return list_appointments(
-            db=db,
-            skip=skip,
-            limit=limit,
-            doctor_id=doctor_id 
-            patient_id=patient_id
-       )
-       
-@router.get("/{appointment_id}", response_model=AppointmentOut)
-    def get_appointment(appointment_id: str, db: Session = Depends(deps.get_db)):
-    if not appoointment:
+    def get_all_apppointment(
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_active_user),
+    ):
+    return appointment_service.get_all_appointments(db=db, user=current_user)
+    
+@router.get("/appointment_id}", response_model=AppointmentOut)
+    def get_appointment_by_id(
+        appointment_id: int,
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_active_user),
+    ):
+    
+    appointment = appointment_service.get_appointment(db=db, appointment_id=appointment_id, user_current)
+    if not appointment:
         raise HTTPException(status_code=404, detail="Appointment not found")
-    return appointment
-        
-	
+    return appointment 
+
+@router.put("/{appointment_id}", response_model=AppointmentOut)
+    def update_appointment(
+        appointment_id: int,
+        appointment_in: AppointmentUpdate,
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_active_user),
+    ):
+    return appointment_service.update_appointment(
+        db=db, appointment_id=appointment_id, appointment_in=appointment_in, user=current_user
+    )
+    
+@router.delete("/{appointment_id}", status_code=status.HTTP_204_NO_CONTENT)
+    def delete_appointment(
+        appointment_id: int,
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_active_user)
+    ):
+    appointment_service.delete_appointment(db=db, appointment_id=appointment_id, user=current_user)
