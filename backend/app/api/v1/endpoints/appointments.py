@@ -1,14 +1,14 @@
 # backend/app/api/v1/endpoints/appointments.py
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
 
-from app.schemas import AppointmentCreate, AppointmentOut
-from app.services.appointment import create_appointment, list_appointment, get_appointment_by_id
-from app.api.v1 import deps 
-
+from app.schemas import AppointmentCreate, AppointmentUpdate, AppointmentOut
+from app.services import appointment as appointment_service
+from app.api.v1.deps import get_db, get_current_active_user
+from app.models.user import user 
 
 router = APIRouter(prefix="/appointments", tags=["Appointments"])
 
@@ -57,3 +57,4 @@ router = APIRouter(prefix="/appointments", tags=["Appointments"])
         current_user = Depends(get_current_active_user)
     ):
     appointment_service.delete_appointment(db=db, appointment_id=appointment_id, user=current_user)
+    return None
