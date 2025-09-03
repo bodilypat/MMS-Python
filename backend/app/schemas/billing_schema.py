@@ -1,22 +1,44 @@
-# backend/app/schemas/billing_schema.py
+#app/schemas/billing_schema.py
 
-from pydantic import BaseModel
-from datetime import date 
+from pydanti import BaseModel 
+from typing import List, Optional
+from enum import Enum
+from datetime import datetime
 
-class BillingBase(BaseModel):
-	patient_id: int
-	appointment_id: int 
-	amount: float 
-	status: str
-	billing_date: date 
+class PaymentStatus(str, Enum):
+	pending = "pending"
+	paid = "paid"
+	cancelled = "cancelled"
 	
-class BillingCreate(BillingBase):
+class PaymentMethods(str, Enum):
+	cash = "cash"
+	card = "card"
+	insurance = "insurance"
+	upi = "upi"
+	
+class BillItemBase(BaseModel):
+	description: str 
+	cost: float
+	
+class BillItemCreate(BillItemBase):
 	pass 
 	
-class BillingOut(BillingBase):
+class BillItemOut(BillItemBase):
 	id: int 
 	
-	class Config: 
+	class Config:
 		orm_mode = True 
-		
+	
+class BillBase(BaseModel):
+	items: List[BillItemCreate]
+	
+class BillOut(BaseBase):
+	id: int 
+	status: PaymentStatus
+	amount: float
+	issued_at: datetime
+	items: List[BillItemOut]
+	
+	class Config:
+		orm_mode = True 
 		
