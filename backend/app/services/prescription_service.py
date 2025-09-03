@@ -2,28 +2,40 @@
 
 from sqlachemy.orm import Session
 from fastapi import HTTPException
-from typing import List, Optional 
+from app.services.prescription_service import prescription_service 
+from app.schemas.prescription_schema import prescript_schema
 
-from app.models.prescription_model import Prescription
-from app.schemas.prescription_schema import(
-		PrescriptionCreate,
-		PrescriptionUpdate
-	)
+from typing import List, Optional 
 	
-	def create_prescription(db: Session, Prescription_data: PrescriptionCreate) -> Prescription:
-		new_prescription = Prescription(**prescription_date.dict())
-		db.add(new_prescription)
-		db.commit()
-		db.refresh(new_prescription)
-		return new_prescription
+def create_prescription(db: Session, data: prescript_schema.PrescriptionCreate):
+		db_prescription = prescript_model.Prescription(
+            patient_id=data.patient_id,
+            doctor_id=data.doctor_id,
+            note=data.notes
+		)
+        db.add(db_prescription)
+        db.flush()
+        for medical in data.medications:
+            db_medical = prescription_model.Medication(
+                prescription_id=db_prescription.id,
+                **medical.dict()
+            )
+            db.add(db_medical)
+        db.commit()
+        db.refresh(db_prescription)
+        return db_prescription
+        
 		
-	def get_all_prescriptions(db: Session) -> List[Prescription]:
+def get_all_prescriptions(db: Session) -> List[Prescription]:
 		return db.query(Prescription).all()
 		
-	def get_prescription_by_id(db: Session, prescription_id: int) -> Optional[Prescription]:
-		return db.query(Prescrption).filter(Prescription.prescription_id === prescription_id).first()
+def get_prescription_by_id(db: Session, prescription_id: int) -> Optional[Prescription]:
+		return db.query(prescription_model.Prescrption).filter(prescription_model.Prescription.id == prescription_id).first()
+        
+def get_prescription_for_patient(db: Session, patient_id: int)
+    return db.query(prescription_model.Prescription).filter(prescription_model.Prescription.patient_id == patient_id).all()
 		
-    def update_prescription(
+def update_prescription(
         db: Session,
         prescription_id: int 
         updates: PrescriptionUpdate 
