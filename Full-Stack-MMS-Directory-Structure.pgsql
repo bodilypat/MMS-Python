@@ -1,4 +1,79 @@
-Full-Stack-MMS-Directory-Structure(no framework)/
+Full-Stack-Medical-Management-System-Directory-Structure
+├── backend/
+│   ├── app/  
+│   │   ├── main.py
+│   │   ├── api_router.py
+│   │   ├── core/
+│   │   ├── db/
+│   │   ├── auth/
+│   │   ├── middleware/
+│   │   ├── api/                              # FastAPI router/Controller
+│   │   │   └── v1/
+│   │   │       ├── __init__.py
+│   │   │       ├── patient_api.py
+│   │   │       ├── doctor_api.py
+│   │   │       ├── appointment_api.py
+│   │   │       ├── prescription_api.py
+│   │   │       ├── medical_record_api.py
+│   │   │       ├── billing_api.py
+│   │   │       ├── inventory_api.py
+│   │   │       └── lab_api.py
+│   │   ├── models/                           # SQLAlchemy
+│   │   │   ├── __init__.py
+│   │   │   ├── patient_model.py
+│   │   │   ├── doctor_model.py
+│   │   │   ├── appointment_model.py
+│   │   │   ├── prescription_model.py
+│   │   │   ├── medical_record_model.py
+│   │   │   └── billing_model.py
+│   │   ├── schemas/                          # Pydantic
+│   │   │   ├── __init__.py
+│   │   │   ├── patient_schema.py
+│   │   │   ├── doctor_schema.py
+│   │   │   ├── appointment_schema.py
+│   │   │   ├── prescription_schema.py
+│   │   │   ├── medical_record_schema.py
+│   │   │   └── billing_schema.py
+│   │   ├── services/                         # Business Logic
+│   │   │   ├── __init__.py
+│   │   │   ├── patient_service.py
+│   │   │   ├── doctor_service.py
+│   │   │   ├── appointment_service.py
+│   │   │   ├── prescription_service.py
+│   │   │   ├── medical_service.py
+│   │   │   └── billing_service.py
+│   │   ├── db/
+│   │   │   ├── __init__.py
+│   │   │   ├── base.py
+│   │   │   ├── session.py
+│   │   │   └── init_db.py
+│   │   ├── middleware/
+│   │   │   ├── __init__.py
+│   │   │   └── auth_middleware.py
+│   │   ├── utils/
+│   │   │   ├── __init__.py
+│   │   │   └── auth_utils.py
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   ├── security.py
+│   │   │   └── exceptions.py
+│   │   └── main.py                                                                                                                 
+│   ├── tests/  
+│   │   ├── __init__.py  
+│   │   ├── conftest.py
+│   │   ├── api/
+│   │   │   ├── test_auth.py
+│   │   │   ├── test_patients.py
+│   │   │   ├── test_doctors.py
+│   │   │   └── test_appointments.py    
+│   │   └── services/     
+│   │       ├── test_doctors.py
+│   │       └── test_appointments.py                             
+├── .env                                      
+├── README.md                                
+├── requirements.txt
+├── run.py                              
 │
 ├── frontend/                         # Front-end static app       
 │   ├── public                        # Static entry point for deployment  
@@ -77,72 +152,3 @@ Full-Stack-MMS-Directory-Structure(no framework)/
 │   ├── README.md 
 │   └── LICENSE                    
 │
-├── backend/
-│   ├── app/                              
-│   │   ├── api/
-│   │   │   ├── v1/
-│   │   │   │   ├── router.py
-│   │   │   │   ├── endpoints/
-│   │   │   │	│	├── __int__.py
-│   │   │   │	│	├── auth.py
-│   │   │   │	│	├── patients.py
-│   │   │   │	│	├── doctors.py
-│   │   │   │	│	├── appointments.py
-│   │   │   │   │   └── billing.py
-│   │   │   │   └── deps.py                       
-│   │   ├── core/   
-│   │   │   ├── __int__.py 
-│   │   │   ├── config.py                             
-│   │   │   ├── security.py
-│   │   │   └── logging.py  
-│   │   ├── models/
-│   │   │   ├── __int__.py
-│   │   │   ├── user.py
-│   │   │   ├── patient.py
-│   │   │   ├── doctor.py
-│   │   │   ├── appointment.py
-│   │   │   └── billing.py 
-│   │   ├── schemas/
-│   │   │   ├── __init__.py
-│   │   │   ├── user.py					          # Common user-related schemas (Auth, Base user)
-│   │   │   ├── patient.py                        # Patient request/response models
-│   │   │   ├── doctor.py                         # Doctor request/response models
-│   │   │   ├── appointment.py                    # Appointment creation/view/update
-│   │   │   └── billing.py                        # Invoice, Payment, billing schemas
-│   │   ├── services/
-│   │   │   ├── __init__.py
-│   │   │   ├── auth.py
-│   │   │   ├── patient.py
-│   │   │   ├── doctor.py
-│   │   │   ├── appointment.py
-│   │   │   └── billings.py   
-│   │   ├── db/
-│   │   │   ├── __init.py
-│   │   │   ├── base.py
-│   │   │   ├── session.py
-│   │   │   └── main.py         
-│   │   ├── middleware/
-│   │   │   ├── __init.py
-│   │   │   └── main.py   
-│   │   ├── utils/
-│   │   │  	├── __init.py
-│   │   │   └── helper.py   
-│   │   └── main.py                       # Entry point (FastAPI app)                           
-│   ├── alembics/ 
-│   │   ├── versions/  
-│   │   └── env.py                   
-│   ├── tests/  
-│   │   ├── __int__.py  
-│   │   ├── conftest.py
-│   │   ├── api/
-│   │   │   ├── test_auth.py
-│   │   │   ├── test_patients.py
-│   │   │   ├── test_doctors.py
-│   │   │   └── test_appointments.py    
-│   │   └── services/     
-│   │       ├── test_doctors.py
-│   │       └── test_appointments.py                             
-├── .env                                      
-├── .htaccess                                 
-├── composer.json                             
-└── README.md
