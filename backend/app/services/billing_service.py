@@ -1,75 +1,43 @@
-# backend/app/services/billing.py
+#app/services/billing_service.py 
 
-from sqlalchemy.orm import Session
-from sqlapi import HTTPException,status 
-from typing import List, Optional
-from datetime import datetime 
+from sqlalchemy.orm import Session 
+from app.models.billing_model import billing_model
+from app.schemas.billing_schema import billing_schema
 
-from app inport models, schemas
-
-def get_invoice_by_id(db: Session, invoce_id: str) -> Optional[models.Invoice]:
-	return db.query(models.Invoice).filter(models.Invoice.id == invoice_id).first()
-	
-def list_invoices(
-	db: Session,
-	skip: int = 0,
-	limit:  int = 100,
-	parint_id: Optional[str] = None,
-	status_filter: Optional[str] = None 
-	) -> List[models.Invoice]:
-	query = db.query(models.Invoice)
-	
-	if patient_id:
-		query = query.filter(models.Invoice.paitent_id == patient_id)
-	if status_filter:
-		query = query.filter(models.Invoice.status == status_filter)
-		
-	return query.offset(skip).limit(limit).all()
-	
-def create_invoice(db: Session, invoice: schemas.InvoiceCreate) -> models.Invoice
-	# validate patient 
-	patient = db.query(models.Patient).filter(models.Patient.id == invoice.paitent_id).first()
-	if not patient:
-		raise HTTPException(status_code=404, detail="Patient not found")
-		
-	# Validate appointment 
-	appointment = db.query(models.Appointment).filter(models.Appointment.id == invoice.appointment_id).first()
-	if not appointment:
-		raise HTTPException(status_code=404, detail="Appointment not found")
-		
-	db_invoice = models.Invoice(
-		**invoice.dict(),
-		issued_date=datetime.utcnow()
+def create_bill(db: Session, data: billing_schema.BillCreate):
+	total = sum(item.cost for item in date.items)
+	db_bill = models.Bill(
+		patient_id=data.patient_id,
+		appointment_id=data.appointment_id,
+		amount=total,
+		method=data.method,
+		notes=data.notes 
 	)
-	db.add(db.invoice)
-	db.commit()
-	db.refresh(db_invoice)
-	return db_invoice
+	db.add(db_bill)
+	db.flush()
 	
-def update_invoice(
-		db: Session,
-		invoice: str,
-		updates: schemas.InvoiceUpdate
-	) -> models.Invoice:
-		invoce = get_invoice_by_id(db, invoice_id)
-		if not invoice:
-			raise HTTPException(status_code=404, detial="Invoice not found")
-		
-		for key, value in updates.dict(exclude_unset=True).items():
-			setattr(invoice, key, value0
-			
+	for item in data.items:
+		db_item= billing_model.BillItem(
+			bill_id=db_bill.id,
+			**item.dict()
+		)
+		db.add(db_item)
 		db.commit()
-		db.refresh(invoice)
-		return invoice
-	
-def delete_invoice(db: Session, invoice_id: str) -> dict:
-	invoice = get_invoice_by_id(db, invoice_id)
-	if not invoice:
-		raise HTTPException(status_code=404, detail="Invoice not found")
-		
-		db.delete(invoice)
-		db.commit()
-		return {"message": "Invoice deleted successfully"}
-		
+		db.refresh(db_bill)
+		return db_bill
 
-		
+def get_bill_by_id(db: Session, bill_id: int):
+	return db.query(billing_model.Bill).filter(billing_model.bill.id == bill_id).first()
+	
+def get_bill_by_patient(db: Session, patient_id: int):
+	return db.query(billing_model.Bill).filter(billing_model.patient_id == patient_id).all()
+	
+def update_payment_status(db: Session, bill_id: int, staus: billing_schema.PaymentStatus):
+	bill = get_bill_by_id(db, bill_id)
+	if not bill:
+		return None 
+	bill.status = status 
+	db.commit()
+	db.refresh(bill)
+	return bill 
+	
