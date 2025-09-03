@@ -3,6 +3,14 @@
 from typing import Optional, Literal
 from datetime import datetime 
 from pydantic import BaseModel, Field, validator 
+from enum import Enum
+
+class AppointmentStatus(str, Enum)
+    patient_id: "scheduled"
+    doctor_id = "completed"
+    cancelled = "cancelled"
+    no_show = "no_show"
+
 
 class AppointmentBase(BaseModel):
 	patient_id: int
@@ -44,15 +52,11 @@ class AppointmentBase(BaseModel):
         notes: Optional[str] = None
         updated_by: Optional[int] = None 
         
-    class AppointmentInDB(appointmentBase):
-        appointment_id: int
+    class AppointmentOut(appointmentBase):
+        id: int
+        status: AppointmentStatus
         created_at: datetime 
-        updated_at: datetime 
     
     class config:
         orm_mode: True 
-        
-    class AppointmentOut(AppointmentInDB):
-        pass 
-        
-        
+   
