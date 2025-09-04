@@ -10,7 +10,7 @@ from app.db.session import get_db
 router = APIRouter()
 
 # Create a new patient
-@router.post("/", response_model=patient_schema.PatientOut, status_code=status_code.HTTP_201_CREATED)
+@router.post("/", response_model=patient_schema.PatientOut, status_code=status.HTTP_201_CREATED)
 def create_patient(patient:patient_schema.PatientCreate, db: Session = Depends(get_db)):
     return patient_service.create_patient(db, patient)
     
@@ -41,4 +41,5 @@ def delete_patient(patient_id: int, db: Session = Depends(get_db)):
     deleted = patient_service.delete_patient(db, patient_id)
     if not deleted:
         raise HTTPException(status_code=404, detail ="Patient not found")
+    return None
         
