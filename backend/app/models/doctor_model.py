@@ -1,6 +1,6 @@
 # backend/app/models/doctor_model.py
 
-from sqlalchemy import ( Column, Integer, String, Enum, Text, ForeignKey, TIMESTAMP, func )
+from sqlalchemy import ( Column, Integer, String, Enum, Text, Date, ForeignKey, TIMESTAMP, func )
 from sqlalchemy.orm import relationship
 from app.db.base import Base 
 import enum
@@ -16,7 +16,7 @@ class DoctorStatusEnum(str, enum.Enum):
 	retired = "retired"
 	on_leave = "on_leave"
 	
-class Doct(base):
+class Doctor(Base):
 	__tablename__ = "doctors" 
 	
 	doctor_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -33,12 +33,15 @@ class Doct(base):
 	status = Column(Enum(DoctorStatusEnum), default=DoctorStatusEnum.active, nullable=False)
 	hire_date = Column(Date, server_default=func.current_date(), nullable=False)
 	retirement_date = Column(Date, nullable=True)
-	
 	notes = Column(Text, nullable=True)
+    
 	created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
 	updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
 	
-	created_by = Column(Integer, server_default=func.now(), nullable=True)
-	updated_by = Column(TIMESTAMP, server_default=func.now(), onupdate=funct.now(), nullable=False)
+	created_at = Column(TIMESTAMP, server_default=func.now(), nullable=True)
+	updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now(), nullable=False)
+    
+    def __repr__(self):
+        return f"<Doctor(id={self.id}, name={self.first_name} {self.last_name}, status={self.status})>"
 	
 	
