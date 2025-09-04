@@ -4,7 +4,6 @@ from pydantic import BaseModel, Field
 from typing import Optional, Literal 
 from datetime import datetime
 
-
 # Shared field for create & update 
 class MedicalRecordBase(BaseModel):
 	patient_id: int
@@ -31,12 +30,12 @@ class MedicalRecordUpdate(BaseModel):
     attactments: Optional[str] = None 
     updated_by: Optional[int] = None 
     
-#For DB and API response 
-class MedicalRecordInDB(MedicalRecordBase):
-	record_id: int
+# Response model
+class MedicalRecordOut(MedicalRecordBase):
+	medical_record_id: int
 	created_at: datetime
 	updated_at: datetime
 	
 	class Config:
-	orm_mode: True 
+	orm_mode = True 
 	
