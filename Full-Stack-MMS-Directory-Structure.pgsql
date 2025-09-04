@@ -1,13 +1,11 @@
 Full-Stack-Medical-Management-System-Directory-Structure
 ├── backend/
 │   ├── app/  
-│   │   ├── main.py
+│   │   ├── main.py                           			# FastAPI app startup
 │   │   ├── api_router.py
-│   │   ├── core/
-│   │   ├── db/
 │   │   ├── auth/
 │   │   ├── middleware/
-│   │   ├── api/                              # FastAPI router/Controller
+│   │   ├── api/                              			# Route handler (controllers)
 │   │   │   └── v1/
 │   │   │       ├── __init__.py
 │   │   │       ├── patient_api.py
@@ -18,48 +16,51 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │       ├── billing_api.py
 │   │   │       ├── inventory_api.py
 │   │   │       └── lab_api.py
-│   │   ├── models/                           # SQLAlchemy
+│   │   ├── models/                           			# SQLAlchemy models
 │   │   │   ├── __init__.py
 │   │   │   ├── patient_model.py
 │   │   │   ├── doctor_model.py
 │   │   │   ├── appointment_model.py
 │   │   │   ├── prescription_model.py
 │   │   │   ├── medical_record_model.py
+│   │   │   ├── inventory_model.py
 │   │   │   └── billing_model.py
-│   │   ├── schemas/                          # Pydantic
+│   │   ├── schemas/                                    # Pydantic data validation
 │   │   │   ├── __init__.py
 │   │   │   ├── patient_schema.py
 │   │   │   ├── doctor_schema.py
 │   │   │   ├── appointment_schema.py
 │   │   │   ├── prescription_schema.py
 │   │   │   ├── medical_record_schema.py
+│   │   │   ├── inventory_schema.py
 │   │   │   └── billing_schema.py
-│   │   ├── services/                         # Business Logic
+│   │   ├── services/                                   # Business Logic
 │   │   │   ├── __init__.py
 │   │   │   ├── patient_service.py
 │   │   │   ├── doctor_service.py
 │   │   │   ├── appointment_service.py
 │   │   │   ├── prescription_service.py
-│   │   │   ├── medical_service.py
+│   │   │   ├── medical_record_service.py
+│   │   │   ├── inventory_service.py
 │   │   │   └── billing_service.py
-│   │   ├── db/
+│   │   ├── db/                                         # Database engine / session/ init
 │   │   │   ├── __init__.py
 │   │   │   ├── base.py
 │   │   │   ├── session.py
 │   │   │   └── init_db.py
-│   │   ├── middleware/
+│   │   ├── middleware/                                 # Custom middleware
 │   │   │   ├── __init__.py
 │   │   │   └── auth_middleware.py
-│   │   ├── utils/
+│   │   ├── utils/                                      # Utility functions
 │   │   │   ├── __init__.py
 │   │   │   └── auth_utils.py
-│   │   ├── core/
+│   │   ├── core/                                       # Configs, security, exceptions
 │   │   │   ├── __init__.py
 │   │   │   ├── config.py
 │   │   │   ├── security.py
 │   │   │   └── exceptions.py
 │   │   └── main.py                                                                                                                 
-│   ├── tests/  
+│   ├── tests/                                          # Unit & integration test
 │   │   ├── __init__.py  
 │   │   ├── conftest.py
 │   │   ├── api/
