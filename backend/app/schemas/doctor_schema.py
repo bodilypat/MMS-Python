@@ -20,19 +20,20 @@ class DoctorBase(BaseModel):
     first_name: str
     last_name: str
     specialization: str 
-    department: Optional[srt] = None 
+    department: Optional[str] = None 
     phone_number: str = Field(..., min_length=7, max_length=20)
     birthdate: Optional[date] = None 
     gender: GenderEnum = GenderEnum.other
+    email: Optional[EmailStr] = None
     address: Optional[str] = None
     status: DoctorStatusEnum = DoctorStatusEnum.active
     hire_date: Optional[date] = None 
     retirement_date: Optional[date] = None 
-    notes: Optinal[str] = None 
+    notes: Optional[str] = None 
    
 class doctorCreate(DoctorBase):
     created_by:Optional[int] = None
-    updated_by: Optional[str] = None
+    updated_by: Optional[int] = None
 	
 class DoctorUpdate(BaseModel):
     first_name: Optional[str] = None 
@@ -43,14 +44,15 @@ class DoctorUpdate(BaseModel):
     phone_number: Optional[str] = None
     birthdate: Optional[date] = None 
     gender: Optional[GenderEnum] = None 
-    address: Optiona[str] = None 
-    status: Optional[date] = None
+    address: Optional[str] = None 
+    status: Optional[DoctorStatusEnum] = None
+    hire_date: Optional[date] = None
     retirement_date: Optional[date] = None 
     notes: Optional[str] = None 
     updated_by: Optional[int] = None 
     
 class DoctorOut(DoctorBase):
-    doctor_id: int 
+    id: int 
     created_at: Optional[date]
     updated_at: Optional[date]
 	
