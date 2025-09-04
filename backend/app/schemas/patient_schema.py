@@ -10,16 +10,17 @@ class GenderEnum(str, Enum):
     female = "female"
     other = "other"
     
-class PatientStatusEnum(str, Enum)
+class PatientStatusEnum(str, Enum):
     active = "active"
-    inactive = "famale"
-    decease = "decease"
+    inactive = "inactive"
+    deceased = "deceased"
    
 class PatientBase(BaseModel):
 	first_name: str 
     last_name: str
     date_of_birth: date
-    Phone_number: str = Field(..., min_length=7, max_length=20)
+    gender: GenderEnum
+    phone_number: str = Field(..., min_length=7, max_length=20)
     email: Optional[EmailStr] = None 
     address: Optional[str] = None 
     primary_care_physical: Optional[str] = None
@@ -38,18 +39,17 @@ class PatientUpdate(BaseModel):
     phone_number: Optional[str] = None 
     email: Optional[EmailStr] = None 
     address: Optional[str] = None 
-    primary_care_physician: Optional[str] = None 
+    primary_care_physical: Optional[str] = None 
     medical_history: Optional[str] = None 
     allergies: Optional[str] = None
     status: Optional[PatientStatusEnum] = None
     
 	
 class PatientOut(PatientBase):
-	patient_id: int
+	id: int
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
     
-	
 	class Config:
 		orm_mode = True 
 		
