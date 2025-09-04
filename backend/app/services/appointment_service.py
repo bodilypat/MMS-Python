@@ -1,11 +1,12 @@
 #app/services/appointment_service.py
 
-from sqlalchemy.orm import SEssion 
-from app.models.appointment_model import appointment_model
-from app.service.appointment_service import appointment_service 
+from sqlalchemy.orm import Session 
 from datetime import timedate 
 
-def check_doctor_availability(db: Session, doctor_id: int, appointment_time):
+from app.models import appointment_model
+from app.schemas import appointment_schema
+
+def check_doctor_availability(db: Session, doctor_id: int, appointment_time) -> bool:
 	# Prevent overlapping appointments 
 	buffer = timedelta(minutes=30)
 	start = appointment_time - buffer 
@@ -19,9 +20,9 @@ def check_doctor_availability(db: Session, doctor_id: int, appointment_time):
 	
 	return conflict is None 
 	
-def create_appointment(db: Session, appointment_schema.AppointmentCreate):
+def create_appointment(db: Session, appointment: appointment_schema.AppointmentCreate):
 	if not check_doctor_availability(db, appointment.doctor_id, appointment.appointment_time):
-		raise ValueError("Doctor n-ot available at this time")
+		raise ValueError("Doctor not available at this time")
 		
 		db_appointment = appointment_model.Appointment(**appointment.dict())
 		db.add(db_appointment)
@@ -44,5 +45,15 @@ def update_appointment(db: Session, appointment_id: int, data: appointment_schem
 	db.commit()
 	db.refresh(appt)
 	return appt 
+    
+def delete_appointment(db: Session, appointment_id: int)
+    appt = get_appointment_by_id(db, appointment_id)
+    if not appt:
+        return None
+    db.delete(appt)
+    db.commit()
+    return appt 
+    
+    
 	
 	
