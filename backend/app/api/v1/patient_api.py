@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.schemas import patient_schema
 from app.services import patient_service
-from app.db import get_db 
+from app.db.session import get_db 
 
 router = APIRouter()
 
