@@ -1,4 +1,4 @@
-# backend/app/schemas/prescription_schema.py
+# app/schemas/prescription_schema.py
 
 from pydantic import BaseModel, Field
 from typing import Optional
@@ -15,7 +15,7 @@ class UnitEnum(str, Enum):
 	drop = 'drop'
 	patch = 'patch'
 	
-class RouterEnum(str, Enum):
+class RouteEnum(str, Enum):
 	oral = 'Oral'
 	iv = 'IV'
 	im = 'IM'
@@ -29,42 +29,54 @@ class StatusEnum(str, Enum):
 	completed = 'Completed'
 	expired = 'Expired'
 	cancelled = 'Cancelled'
-	
+# Shared fields for all prescrption schema
 class PrescriptionBase(BaseModel):
 	record_id: int 
 	patient_id: int 
 	doctor_id: int 
 	appointment_id: Optional[int] = None 
+    
 	medical_name: str = Field(..., max_length=150)
 	generic_name: Optional[str] = Field(None, max_length=150)
 	dosage: str = Field(..., max_length=100)
 	unit: UnitEnum = UnitEnum.mg 
-	frequency; str = Field(..., max_length=100)
-	route: RouterEnum = RouterEnum.oral
+	frequency: str = Field(..., max_length=100)
+	route: RouteEnum = RouteEnum.oral
 	duration_days: Optional[int] = None 
 	start_date: date
 	end_date: Optional[date] = None 
+    
 	instructions: Optional[str] = None 
 	notes: Optional[str] = None 
 	refill_count: Optional[int] = 0
-	status: StatusEnum = StatusEnum.action
+	status: StatusEnum = StatusEnum.active
 	
-class PrescriptionCreate(PrescriptionBase):
-	medication_name: Optional[str] = Field(None, max_length=150)
+# For creating prescriptions
+class PrescriptionCreate(BaseModel):
+    record_id: int 
+	patient_id: int 
+	doctor_id: int 
+	appointment_id: Optional[int] = None 
+    
+	medical_name: Optional[str] = Field(None, max_length=150)
 	generic_name: Optional[str] = Field(None, max_length=150)
-	dosage: Optional[str] = Field(None, max_length=50)
-	unit: Optional[UnitEnum] = None 
-	frequency: Optional[str] = Field(None, max_length=100)
-	route: Optional[RouterEnum] = None 
-	duration_days: Optional[it] = None 
-	start_date: Optional[date] = None
+	dosage: Optional[str] = Field(..., max_length=100)
+	unit: UnitEnum = UnitEnum.mg
+	frequency: str = Field(..., max_length=100)
+	route: RouteEnum = RouteEnum.oral
+	duration_days: Optional[int] = None 
+	start_date: date
 	end_date: Optional[date] = None 
+    
 	instructions: Optional[str] = None 
 	notes: Optional[str] = None 
 	refill_count: Optional[int] = None 
-	status: Optional[StatusEnum] = None
+	status: StatusEnum = StatusEnum.active
+    
+    created_by: Optional[int] = None
 	updated_by: Optional[int] = None 
-	
+
+# For response	
 class PrescriptionOut(PrescriptionBase):
 	prescription_id: int 
 	created_by: Optional[int]
@@ -75,4 +87,24 @@ class PrescriptionOut(PrescriptionBase):
 class Config:
 	orm_mode = True 
 	
-	
+# For updates
+class PrescriptionUpdate(BaseModel):
+    medical_name: Optiona[str] = Field(None, max_length=150)
+    generic_name: Optional[str] = Field(None, max_length=150)
+	dosage: Optional[str] = Field(None, max_length=100)
+	unit: Optional[UnitEnum] = None
+	frequency: Optional[str] = Field(None, max_length=100)
+	route: Optional[RouteEnum] = None
+	duration_days: Optional[int] = None 
+	start_date: Optional[date] = None 
+	end_date: Optional[date] = None 
+    
+	instructions: Optional[str] = None 
+	notes: Optional[str] = None 
+	refill_count: Optional[int] = None 
+	status: Optional[StatusEnum] = None 
+    updated_by: Optional[int] = None
+    
+    class Config: 
+        orm_mode = True 
+            
