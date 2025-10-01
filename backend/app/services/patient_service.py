@@ -1,45 +1,48 @@
-#app/services/patient_service.py 
+#app/services/patient_service.py
 
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status 
-from typing import List, Optional
+from app.schemas.patient import PatientCreate, PatientUpdate 
+from app.models.patient import Patient 
+from typing import List, Optional 
 
-from app.models import patient_model as models
-from app.schemas import patient_schema as schemas
+class PatientService:
+    def __init__(self, db: Session):
+        self.db = db
 
-def create_patient(db: Session, patient: schemas.PatientCreate) -> models.Patient:
-	db_patient = models.Patient(**patient.dict())
-	db.add(db_patient)
-	db.commit()
-	db.refresh(db_patient)
-	return db_patient
-	
-def get_patient_by_id(db: Session, patient_id: int) -> Optional[models.Patient]:
-	return db.query(models.Patient).filter(models.Patient.id == patient_id).first()
-	
-def get_all_patients(db: Session, skip: int = 0, limit = 100) ->List[models.Patient]:
-	return db.query(models.Patient).offset(skip).limit(limit).all()
-	
-def update_patient(db: Session, patient_id: int, patient: schemas.PatientUpdate) ->Optional[models.Patient]:
-	db_patient = get_patient_by_id(db, patient_id)
-	if not db_patient:
-		return None 
+    def get_all_patients(self, skip: int = 0, limit: int = 10) -> List[Patient]:
+        return self.db.query(Patient).offset(skip).limit(limit).all()
+    
+    def get_patient_by_id(self, patient_id: int) -> Optional[Patient]:
+        return self.db.query(Patient).filter(Patient.id == patient_id).first()
+    
+    def create_patient(self, patient_info: PatientCreate) -> Optional[Patient]:
+        new_patient = Patient(**patient_info.dict())
+
+        self.db.add(new_patient)
+        self.db.commit()
+        self.db.refresh(new_patient)
+        return new_patient
+    
+    def update_patient(self, patient_id: int, updated_patient: PatientUpdate) -> Optional[Patient]:
+        patient = self.db.query(Patient).filter(Patient.id == patient_id).first()
+
+        if not patient:
+            return None 
         
-    patient_data = patient.dict(exclude_unset=True)
-	for field, value in patient_data.items():
-		setattr(db_patient, field, value)
-		
-		db.commit()
-		db.refresh(db_patient)
-		return db_patient 
-		
-def delete_patient(db: Session, patient_id: int) -> bool:
-	db_patient = get_patient_by_id(db, patient_id)
-	if not db_patient:
-        return False
+        for field, value in updated_patient.dict(exclude_unset=True).items():
+            setattr(patient, field, value)
+
+        self.db.commit()
+        self.db.refresh(patient)
+        return patient
+    
+    def delete_patient(self, patient_id: int) -> Optional[Patient]:
+        patient = self.db.query(Patient).filter(Patient.id == patient_id).first()
+
+        if not patient:
+            return False 
         
-	db.delete(db_patient)
-	db.commit()
-	return True 
-	
-	
+        self.db.delete(patient)
+        self.db.commit()
+        return True 
+    

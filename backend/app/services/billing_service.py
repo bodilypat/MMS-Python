@@ -1,54 +1,50 @@
-#app/services/billing_service.py 
+#app/services/billing_service.py
 
-from sqlalchemy.orm import Session 
-from typing import Optional, List 
+from sqlalchemy.orm import Session
+from app.schemas.billing import BillingCreate, BillingUpdate 
+from app.models.billing import Billing
+from typing import List, Optional
 
-from app.models import billing_model
-from app.schemas import billing_schema
+class BillingService:
 
-def create_bill(db: Session, data: billing_schema.BillCreate) -> billing_model.Bill:
-	total = sum(item.cost for item in data.items)
+    def __init__(self, db: Session):
+        self.db = db
+
+    def get_all_billing(self, skip: int = 0, limit: int = 10) -> List[Billing]:
+        return self.db.query(Billing).offset(skip).limit(limit).all()
     
-	db_bill = billing_models.Bill(
-		patient_id=data.patient_id,
-		appointment_id=data.appointment_id,
-		amount=total,
-		method=data.method,
-		notes=data.notes,
-        status=data.status or billing_schema.PaymentStatus.unpaid,
-        created_by=data.created_by,
-        updated_by=data.updated_by,
-	)
-	db.add(db_bill)
-	db.flush() # Get db_bill.id before adding items
-	
-	for item in data.items:
-		db_item= billing_model.BillItem(
-			bill_id=db_bill.bill_id,
-            description=item.description,  
-            cost=item.cost,
-            quantity=item.quantity,
-		)
-		
-		db.commit()
-		db.refresh(db_bill)
-		return db_bill
+    def get_billing_by_id(self, billing_id: int) -> Optional[Billing]:
+        return self.db.query(Billing).filter(Billing.id == billing_id).first()
+    
+    def create_billing(self, billind_data: BillingCreate) -> Billing:
+        new_billing = Billing(**billind_data.dict())
 
-def get_bill_by_id(db: Session, bill_id: int) -> Optional[billing_model.Bill]:
-	return db.query(billing_model.Bill).filter(billing_model.Bill.bill_id == bill_id).first()
-	
-def get_bill_by_patient(db: Session, patient_id: int) -> List[billing_model.Bill]:
-	return db.query(billing_model.Bill).filter(billing_model.Bill.patient_id == patient_id).all()
-	
-def update_payment_status(
-        db: Session, bill_id: int, 
-        staus: billing_schema.PaymentStatus
-        ) -> Optional[billing_model.Bill]:
-        bill = get_bill_by_id(db, bill_id)
-        if not bill:
+        self.db.add(new_billing)
+        self.db.commit()
+        self.db.refresh(new_billing)
+        return new_billing
+    
+    def update_billing(self, billing_id: int, updated_billing: BillingUpdate) -> Optional[Billing]:
+        billing = self.db.query(Billing).filter(Billing.id == billing_id).first()
+
+        if not billing:
             return None 
-        bill.status = status 
-        db.commit()
-        db.refresh(bill)
-        return bill 
-	
+        
+        for field, value in updated_billing.dict(exclude_unset=True).items()
+            setattr(billing,field, value)
+        
+        self.db.commit()
+        self.db.refresh(billing)
+        return billing 
+    
+    def delete_billing(self, billing_id: int) -> Optional(Billing):
+        billing = self.db.query(Billing).filter(Billing.id == billing_id).first()
+
+        if not billing:
+            return False 
+        
+        self.db.delete(billig)
+        self.db.commit()
+        return True 
+    
+    
