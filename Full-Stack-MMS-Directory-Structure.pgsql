@@ -6,34 +6,34 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   ├── auth/
 │   │   ├── middleware/
 │   │   ├── api/                              			# Route handler (controllers)
-│   │   │   └── v1/
+│   │   │   └── endpoints/
 │   │   │       ├── __init__.py
-│   │   │       ├── patient_api.py
-│   │   │       ├── doctor_api.py
-│   │   │       ├── appointment_api.py
-│   │   │       ├── prescription_api.py
-│   │   │       ├── medical_record_api.py
-│   │   │       ├── billing_api.py
-│   │   │       ├── inventory_api.py
+│   │   │       ├── patient_router.py
+│   │   │       ├── doctor_router.py
+│   │   │       ├── appointment_router.py
+│   │   │       ├── prescription_router.py
+│   │   │       ├── medical_record_router.py
+│   │   │       ├── billing_router.py
+│   │   │       ├── inventory_router.py
 │   │   │       └── lab_api.py
 │   │   ├── models/                           			# SQLAlchemy models
 │   │   │   ├── __init__.py
-│   │   │   ├── patient_model.py
-│   │   │   ├── doctor_model.py
-│   │   │   ├── appointment_model.py
-│   │   │   ├── prescription_model.py
-│   │   │   ├── medical_record_model.py
-│   │   │   ├── inventory_model.py
-│   │   │   └── billing_model.py
+│   │   │   ├── patient.py
+│   │   │   ├── doctor.py
+│   │   │   ├── appointment.py
+│   │   │   ├── prescription.py
+│   │   │   ├── medical_record.py
+│   │   │   ├── inventory.py
+│   │   │   └── billing.py
 │   │   ├── schemas/                                    # Pydantic data validation
 │   │   │   ├── __init__.py
-│   │   │   ├── patient_schema.py
-│   │   │   ├── doctor_schema.py
-│   │   │   ├── appointment_schema.py
-│   │   │   ├── prescription_schema.py
-│   │   │   ├── medical_record_schema.py
-│   │   │   ├── inventory_schema.py
-│   │   │   └── billing_schema.py
+│   │   │   ├── patient.py
+│   │   │   ├── doctor.py
+│   │   │   ├── appointment.py
+│   │   │   ├── prescription.py
+│   │   │   ├── medical_record.py
+│   │   │   ├── inventory.py
+│   │   │   └── billing.py
 │   │   ├── services/                                   # Business Logic
 │   │   │   ├── __init__.py
 │   │   │   ├── patient_service.py
