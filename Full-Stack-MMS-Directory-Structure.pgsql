@@ -9,6 +9,7 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   └── endpoints/
 │   │   │       ├── __init__.py
 │   │   │       ├── patient_router.py
+│   │   │       ├── department_router.py
 │   │   │       ├── doctor_router.py
 │   │   │       ├── appointment_router.py
 │   │   │       ├── prescription_router.py
@@ -19,6 +20,7 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   ├── models/                           			# SQLAlchemy models
 │   │   │   ├── __init__.py
 │   │   │   ├── patient.py
+│   │   │   ├── department.py
 │   │   │   ├── doctor.py
 │   │   │   ├── appointment.py
 │   │   │   ├── prescription.py
@@ -28,6 +30,7 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   ├── schemas/                                    # Pydantic data validation
 │   │   │   ├── __init__.py
 │   │   │   ├── patient.py
+│   │   │   ├── department.py
 │   │   │   ├── doctor.py
 │   │   │   ├── appointment.py
 │   │   │   ├── prescription.py
@@ -37,6 +40,7 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   ├── services/                                   # Business Logic
 │   │   │   ├── __init__.py
 │   │   │   ├── patient_service.py
+│   │   │   ├── department_service.py
 │   │   │   ├── doctor_service.py
 │   │   │   ├── appointment_service.py
 │   │   │   ├── prescription_service.py
