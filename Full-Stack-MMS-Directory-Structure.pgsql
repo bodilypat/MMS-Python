@@ -1,10 +1,8 @@
 Full-Stack-Medical-Management-System-Directory-Structure
-├── backend/
+├── backend-Python
 │   ├── app/  
 │   │   ├── main.py                           			# FastAPI app startup
 │   │   ├── api_router.py
-│   │   ├── auth/
-│   │   ├── middleware/
 │   │   ├── api/                              			# Route handler (controllers)
 │   │   │   └── endpoints/
 │   │   │       ├── __init__.py
@@ -48,25 +46,22 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   ├── inventory_service.py
 │   │   │   └── billing_service.py
 │   │   ├── db/                                         # Database engine / session/ init
-│   │   │   ├── __init__.py
 │   │   │   ├── base.py
 │   │   │   ├── session.py
 │   │   │   └── init_db.py
-│   │   ├── middleware/                                 # Custom middleware
-│   │   │   ├── __init__.py
+│   │   ├── middleware/                                 
 │   │   │   └── auth_middleware.py
+│   │   ├── auth/                                       
+│   │   │   ├── auth_handler.py
+│   │   │   └── auth_bearer.py
 │   │   ├── utils/                                      # Utility functions
-│   │   │   ├── __init__.py
 │   │   │   └── auth_utils.py
 │   │   ├── core/                                       # Configs, security, exceptions
-│   │   │   ├── __init__.py
 │   │   │   ├── config.py
 │   │   │   ├── security.py
 │   │   │   └── exceptions.py
 │   │   └── main.py                                                                                                                 
 │   ├── tests/                                          # Unit & integration test
-│   │   ├── __init__.py  
-│   │   ├── conftest.py
 │   │   ├── api/
 │   │   │   ├── test_auth.py
 │   │   │   ├── test_patients.py
@@ -80,80 +75,65 @@ Full-Stack-Medical-Management-System-Directory-Structure
 ├── requirements.txt
 ├── run.py                              
 │
-├── frontend/                         # Front-end static app       
+├── frontend-react/                      
 │   ├── public                        # Static entry point for deployment  
-│   │   └── index.html                # Entry login/landing page
-│   ├── pages/                        # Pages routed via hash or history 
-│   │   ├── dasdboard/                # Dashboard & layout-specific views    
-│   │   │   ├── home.html                    
-│   │   │   └── overview.html    
-│   │   └── modules/  
-│   │ 		├── patients/
-│   │   	│   ├── list.html                    
-│   │  		│   ├── add.html                     
-│   │   	│   ├── view.html                    
-│   │   	│   └── edit.html 
-│   │   	├── doctors/
-│   │   	│   ├── list.html                    
-│   │   	│   ├── add.html                     
-│   │   	│   ├── profile.html                    
-│   │   	│   └── schedule.html  
-│   │   	├── appointments/                
-│   │   	│   ├── list.html                     
-│   │   	│   ├── book.html                    
-│   │   	│   └── calendor.html      
-│   │   	├── prescriptions/
-│   │   	│   ├── list.html                                 
-│   │   	│   └── add.html 
-│   │   	├── lab-tests/
-│   │   	│   ├── list.html                                
-│   │   	│   └── results.html     
-│   │   	├── payments/
-│   │   	│   ├── invoices.html                                   
-│   │   	│   └── receipt.html          
-│   │   	├── insurance/
-│   │   	│   ├── polices.html                                      
-│   │   	│   └── claim.html  
-│   │   	├── pharmacies/
-│   │   	│   ├── list.html                                    
-│   │   	│   └── orders.html  
-│   │   	└── reports/ 
-│   │       	├── summary.html                   
-│   │       	└── charts.html                
-│   ├── components/							# Reusable UI parts
-│   │   ├── layout/  
-│   │   │   ├── navbar.html 
-│   │   │   ├── sidebar.html 
-│   │   │   └── footer.html            
-│   │   └── modals/ 
-│   │       └── confirm-delete.html
-│   ├── assets/                              
-│   │   ├── css/
-│   │   │   ├── main.css                    # Global styles
-│   │   │   ├── layout.css                  # Layout-specific styles 
-│   │   │   └── module/                     # Module-specific styles 
-│   │   │       ├── patients.css
-│   │   │       ├── doctors.css
-│   │   │       └── appointments.css
-│   │   │ 
-│   │   ├── js/
-│   │   │   ├── main.js                      # Bootstrap/init script
-│   │   │   ├── auth.js                      # Auth logic
-│   │   │   ├── api.js                       # API service (XHR/fetch)
-│   │   │   └── module/                      # Module-specific JS
-│   │   │       ├── patients.js
-│   │   │       ├── doctors.js
-│   │   │       └── appointments.js
-│   │   └── images/
-│   │       └── Logo.png
+│   │   └── index.html                # Entry login/landing page 
+│   │     
+│   ├── src/                              
+│   │   ├── assets/
+│   │   │   ├── images/ 
+│   │   │   │   └── logo.png
+│   │   │   └── styles/                     # Module-specific styles 
+│   │   │       ├── main.css
+│   │   │       └── layout.css
+│   │   │
+│   ├── components/							
+│   │   ├── Navbar.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── Footer.jsx     
+│   │   └── ModalDelete.jsx
+│   ├── pages/	
+│   │ 	├── Auth/
+│   │   │   ├── login.jsx                    
+│   │  	│   ├── register.jsx                     
+│   │   │   ├── login.schema.js                 
+│   │   │   └── register.schema.js
+│   │ 	├── patients/
+│   │   │   ├── patientList.jsx                    
+│   │  	│   ├── patientFrom.jsx
+│   │   │   ├── patient.api.js           
+│   │   │   └── patient.schema.js
+│   │   ├── doctors/
+│   │   │   ├── doctorList.jsx                    
+│   │  	│   ├── doctorFrom.jsx                        
+│   │   │   └── doctor.api.js
+│   │   ├── appointments/   
+│   │   │   ├── appointmentList.jsx                    
+│   │  	│   ├── appointmentFrom.jsx                            
+│   │   │   └── appointment.api.js                 
+│   │   ├── billings/
+│   │   │   ├── billingList.jsx                    
+│   │  	│   ├── billingReceipt.jsx                               
+│   │   │   └── billing.api.js                   
+│   │   └── reports/ 
+│   │      	├── summary.jsx            
+│   │      	└── charts.jsx           
 │   │ 
-│   │ 
+│   ├── services/							
+│   │   ├── apiClient.js                     # Business logic / utilities
+│   │   ├── authService.js                   # Axios or fetch wrapper
+│   │   └── session.js
 │   ├── utils/                               # Utility scripts/helpers
-│   │   ├── form-validation.js
-│   │   └── date-utils.js 
-│   ├── store/                               # (optional) Shared data/state (local/session/user)
-│   │   └── session.js 
+│   │   ├── formValidation.js
+│   │   └── dateUtils.js 
+│   ├── routes/                              # Route definitions 
+│   │   └── AppRoutes.jsx 
 │   │ 
-│   ├── README.md 
-│   └── LICENSE                    
+│   ├── App.jsx
+│   ├── index.js
+│   └── readme.md                 
 │
+├── .env 
+├── package.json
+├── tailwind.config.js / postcss.config.js(optional)
+└── vite.config.js / webpack.config.js
