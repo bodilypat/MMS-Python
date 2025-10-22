@@ -69,64 +69,60 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   └── test_appointments.py    
 │   │   └── services/     
 │   │       ├── test_doctors.py
-│   │       └── test_appointments.py                             
-├── .env                                      
-├── README.md                                
-├── requirements.txt
-├── run.py                              
-│
+│   │       └── test_appointments.py                                                        
+│   │ 
 ├── frontend-react/                      
-│   ├── public                        # Static entry point for deployment  
-│   │   └── index.html                # Entry login/landing page 
+│   ├── public                                        # Static entry point for deployment  
+│   │   └── index.html                                # Entry login/landing page 
 │   │     
 │   ├── src/                              
 │   │   ├── assets/
 │   │   │   ├── images/ 
 │   │   │   │   └── logo.png
-│   │   │   └── styles/                     # Module-specific styles 
+│   │   │   └── styles/                     
 │   │   │       ├── main.css
 │   │   │       └── layout.css
 │   │   │
-│   ├── components/							
+│   ├── components/							          # Shared Components
 │   │   ├── Navbar.jsx
 │   │   ├── Sidebar.jsx
 │   │   ├── Footer.jsx     
 │   │   └── ModalDelete.jsx
 │   ├── pages/	
 │   │ 	├── Auth/
-│   │   │   ├── login.jsx                    
-│   │  	│   ├── register.jsx                     
+│   │   │   ├── Login.jsx                    
+│   │  	│   ├── Register.jsx                     
 │   │   │   ├── login.schema.js                 
 │   │   │   └── register.schema.js
 │   │ 	├── patients/
-│   │   │   ├── patientList.jsx                    
-│   │  	│   ├── patientFrom.jsx
+│   │   │   ├── PatientList.jsx                    
+│   │  	│   ├── PatientFrom.jsx
 │   │   │   ├── patient.api.js           
 │   │   │   └── patient.schema.js
 │   │   ├── doctors/
-│   │   │   ├── doctorList.jsx                    
-│   │  	│   ├── doctorFrom.jsx                        
+│   │   │   ├── DoctorList.jsx                    
+│   │  	│   ├── DoctorFrom.jsx                        
 │   │   │   └── doctor.api.js
 │   │   ├── appointments/   
-│   │   │   ├── appointmentList.jsx                    
-│   │  	│   ├── appointmentFrom.jsx                            
+│   │   │   ├── AppointmentList.jsx                    
+│   │  	│   ├── AppointmentFrom.jsx                            
 │   │   │   └── appointment.api.js                 
 │   │   ├── billings/
-│   │   │   ├── billingList.jsx                    
-│   │  	│   ├── billingReceipt.jsx                               
+│   │   │   ├── BillingList.jsx                    
+│   │  	│   ├── BillingReceipt.jsx                               
 │   │   │   └── billing.api.js                   
 │   │   └── reports/ 
-│   │      	├── summary.jsx            
-│   │      	└── charts.jsx           
+│   │      	├── Summary.jsx            
+│   │      	└── Charts.jsx           
 │   │ 
 │   ├── services/							
-│   │   ├── apiClient.js                     # Business logic / utilities
-│   │   ├── authService.js                   # Axios or fetch wrapper
-│   │   └── session.js
-│   ├── utils/                               # Utility scripts/helpers
+│   │   ├── apiClient.js                     # Axios wrapper
+│   │   ├── authService.js                   # Login/Register
+│   │   └── session.js                       # Session Storage
+│   ├── utils/                               
 │   │   ├── formValidation.js
 │   │   └── dateUtils.js 
-│   ├── routes/                              # Route definitions 
+│   ├── routes/                               
 │   │   └── AppRoutes.jsx 
 │   │ 
 │   ├── App.jsx
@@ -134,6 +130,6 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   └── readme.md                 
 │
 ├── .env 
-├── package.json
-├── tailwind.config.js / postcss.config.js(optional)
-└── vite.config.js / webpack.config.js
+├── README.md
+├── run.py
+└── requirements.txt                        # Python dependancies
