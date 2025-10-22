@@ -1,15 +1,27 @@
 #app/core/config.py
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./mms.db")
-    SECRET_KEY: str = "supersecret"
-    ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    app_name: str = "Medical Management System"
+    app_env: str = "development"
+    app_debug: bool = True 
+    app_port: int = 8000
+
+    db_host: str 
+    db_port: int 
+    db_name: str
+    db_user: str 
+    db_password: str 
+    database_url: str 
+
+    secret_key: str 
+    algorithm: str 
+    access_token_expire_minutes: int
+
+    backend_cors_origins: str 
 
     class Config:
-        env_file = ".env"
+        env_file =".env"
 
-    settings = Settings()
-    
+    settings = Settings
