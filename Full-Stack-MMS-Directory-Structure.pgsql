@@ -23,8 +23,8 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   ├── appointment.py
 │   │   │   ├── prescription.py
 │   │   │   ├── medical_record.py
-│   │   │   ├── inventory.py
-│   │   │   └── billing.py
+│   │   │   ├── billing.py
+│   │   │   └── inventory.py
 │   │   ├── schemas/                                    # Pydantic data validation
 │   │   │   ├── __init__.py
 │   │   │   ├── patient.py
@@ -33,8 +33,8 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   ├── appointment.py
 │   │   │   ├── prescription.py
 │   │   │   ├── medical_record.py
-│   │   │   ├── inventory.py
-│   │   │   └── billing.py
+│   │   │   ├── billing.py
+│   │   │   └── inventory.py
 │   │   ├── services/                                   # Business Logic
 │   │   │   ├── __init__.py
 │   │   │   ├── patient_service.py
@@ -43,37 +43,59 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   ├── appointment_service.py
 │   │   │   ├── prescription_service.py
 │   │   │   ├── medical_record_service.py
-│   │   │   ├── inventory_service.py
-│   │   │   └── billing_service.py
+│   │   │   ├── billing_service.py
+│   │   │   └── inventory_service.py
 │   │   ├── db/                                         # Database engine / session/ init
+│   │   │   ├── __init__.py
 │   │   │   ├── base.py
 │   │   │   ├── session.py
 │   │   │   └── init_db.py
-│   │   ├── middleware/                                 
-│   │   │   └── auth_middleware.py
-│   │   ├── auth/                                       
+│   │   ├── auth/    
+│   │   │   ├── __init__.py                                   
+│   │   │   ├── auth_handler.py
+│   │   │   ├── auth_bearer.py
+│   │   │   └── permission.py
+│   │   ├── middleware/    
+│   │   │   ├── __init__.py           
+│   │   │   ├── auth_middleware.py                      
+│   │   │   └── logging_middleware.py
+│   │   ├── auth/    
+│   │   │   ├── __init__.py                                   
 │   │   │   ├── auth_handler.py
 │   │   │   └── auth_bearer.py
-│   │   ├── utils/                                      # Utility functions
-│   │   │   └── auth_utils.py
 │   │   ├── core/                                       # Configs, security, exceptions
+│   │   │   ├── __init__.py 
 │   │   │   ├── config.py
 │   │   │   ├── security.py
-│   │   │   └── exceptions.py
-│   │   └── main.py                                                                                                                 
+│   │   │   ├── exceptions.py
+│   │   │   └── constants.py
+│   │   ├── utils/  
+│   │   │   ├── __init__.py 
+│   │   │   ├── auth_utils.py
+│   │   │   ├── date_utils.py
+│   │   │   ├── response_utils.py                                    # Utility functions
+│   │   │   └── file_utils.py
+│   │   └── __main.py                                                                                                                 
 │   ├── tests/                                          # Unit & integration test
+│   │   ├── __init__.py
 │   │   ├── api/
+│   │   │   ├── __init__.py
 │   │   │   ├── test_auth.py
 │   │   │   ├── test_patients.py
 │   │   │   ├── test_doctors.py
-│   │   │   └── test_appointments.py    
+│   │   │   ├── test_appointments.py
+│   │   │   └── test_billing.py    
 │   │   └── services/     
-│   │       ├── test_doctors.py
-│   │       └── test_appointments.py                                                        
+│   │       ├── test_doctors_service.py
+│   │       ├── test_patient_service.py
+│   │       └── test_appointment_service.py                                                        
 │   │ 
 ├── frontend-react/                      
 │   ├── public                                        # Static entry point for deployment  
-│   │   └── index.html                                # Entry login/landing page 
+│   │   ├── index.html
+│   │   ├── favicon.ico
+│   │   ├── manifest.json
+│   │   └── robots.txt                                 
 │   │     
 │   ├── src/                              
 │   │   ├── assets/
@@ -81,55 +103,90 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │   │   └── logo.png
 │   │   │   └── styles/                     
 │   │   │       ├── main.css
-│   │   │       └── layout.css
+│   │   │       ├── layout.css
+│   │   │       ├── theme.css
+│   │   │       └── variables.css
 │   │   │
-│   ├── components/							          # Shared Components
-│   │   ├── Navbar.jsx
-│   │   ├── Sidebar.jsx
-│   │   ├── Footer.jsx     
-│   │   └── ModalDelete.jsx
+│   ├── components/							          # Reusable UI components
+│   │   ├── common/                                   # Shared small components
+│   │   │   ├── Button.jsx
+│   │   │   ├── InputField.jsx
+│   │   │   ├── Spinner.jsx
+│   │   │   └── Table.jsx
+│   │   │
+│   │   ├── layout/                                   # Layout-level components
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── ProtectedRoute.jsx                    # Role-based route guard
+│   │   │
+│   │   └── Modals/
+│   │       ├── ModalDelete.jsx
+│   │       └── ModalConfirm.jsx
 │   ├── pages/	
-│   │ 	├── Auth/
+│   │ 	├── Auth/                                     # Page-level components
 │   │   │   ├── Login.jsx                    
 │   │  	│   ├── Register.jsx                     
 │   │   │   ├── login.schema.js                 
 │   │   │   └── register.schema.js
-│   │ 	├── patients/
+│   │ 	├── Patients/
 │   │   │   ├── PatientList.jsx                    
-│   │  	│   ├── PatientFrom.jsx
+│   │  	│   ├── PatientFrom.jsx                       # Fixed spelling "Form"
 │   │   │   ├── patient.api.js           
 │   │   │   └── patient.schema.js
-│   │   ├── doctors/
+│   │   ├── Doctors/
 │   │   │   ├── DoctorList.jsx                    
 │   │  	│   ├── DoctorFrom.jsx                        
 │   │   │   └── doctor.api.js
-│   │   ├── appointments/   
+│   │   ├── Appointments/   
 │   │   │   ├── AppointmentList.jsx                    
 │   │  	│   ├── AppointmentFrom.jsx                            
 │   │   │   └── appointment.api.js                 
-│   │   ├── billings/
+│   │   ├── Billings/
 │   │   │   ├── BillingList.jsx                    
 │   │  	│   ├── BillingReceipt.jsx                               
-│   │   │   └── billing.api.js                   
-│   │   └── reports/ 
-│   │      	├── Summary.jsx            
-│   │      	└── Charts.jsx           
+│   │   │   └── billing.api.js           
+│   │   ├── Reports/           
+│   │  	│   ├── Summary.jsx                               
+│   │   │   └── Chart.jsx           
+│   │   ├── Dashboard/                               
+│   │   │   └── Dashboard.jsx           
+│   │   └── NotFound.jsx                              # 404 page          
 │   │ 
-│   ├── services/							
-│   │   ├── apiClient.js                     # Axios wrapper
-│   │   ├── authService.js                   # Login/Register
-│   │   └── session.js                       # Session Storage
-│   ├── utils/                               
+│   ├── routes/                                       # App Routing
+│   │   ├── AppRoutes.jsx                             # Main route map   
+│   │   └── routeConfix.js                            # Centralized route definitions 
+│   ├── context/							
+│   │   ├── AuthContext.jsx                           # Global state or auth context
+│   │   └── ThemeContext.jsx 
+│   │
+│   ├── hooks/				                          # Custom React hooks			
+│   │   ├── useAuth.js                     
+│   │   ├── useApi.js     
+│   │   ├── useForm.js                   
+│   │   └── useTheme.js        
+│   │    
+│   ├── services/				                      # API and service layers			
+│   │   ├── apiClient.js                              # Axios or Fetch wrapper
+│   │   ├── authService.js                            # Login/Register
+│   │   ├── patientService.js   
+│   │   ├── doctorService.js            
+│   │   ├── appointmentService.js      
+│   │   ├── billingService.js          
+│   │   └── session.js                                # Session/localStorage helpers
+│   │ 
+│   ├── utils/                                        # Utility helpers
 │   │   ├── formValidation.js
-│   │   └── dateUtils.js 
-│   ├── routes/                               
-│   │   └── AppRoutes.jsx 
-│   │ 
-│   ├── App.jsx
-│   ├── index.js
-│   └── readme.md                 
+│   │   ├── dateUtils.js
+│   │   ├── formatters.js                             # For currency, name, phone
+│   │   └── constants.js                              # Frontend constants (roles, URLS)
+│   │
+│   ├── App.jsx                                       # Root component
+│   ├── index.js                                      # React entry point
+│   ├── setupTests.js                                 # Jest / RTL stup (Optional)
+│   └── vite.config.js / webpack.config.js            # Depending n bundler                
 │
 ├── .env 
-├── README.md
-├── run.py
+├── package.json
+├── REMDME.md
 └── requirements.txt                        # Python dependancies
