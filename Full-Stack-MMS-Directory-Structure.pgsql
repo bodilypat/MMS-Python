@@ -107,31 +107,43 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │       ├── theme.css
 │   │   │       └── variables.css
 │   │   │
-│   ├── components/							          # Reusable UI components
-│   │   ├── common/                                   # Shared small components
-│   │   │   ├── Button.jsx
-│   │   │   ├── InputField.jsx
-│   │   │   ├── Spinner.jsx
-│   │   │   └── Table.jsx
-│   │   │
-│   │   ├── layout/                                   # Layout-level components
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Sidebar.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   └── ProtectedRoute.jsx                    # Role-based route guard
-│   │   │
-│   │   └── Modals/
-│   │       ├── ModalDelete.jsx
-│   │       └── ModalConfirm.jsx
+│   │ 	├── components/							                 # Reusable UI components
+│   │   │   ├── common/   
+│   │   │   │	├── Accordion/  
+│   │   │   │	│   ├── Accordion.jsx
+│   │   │   │	│   ├── AccordionItem.jsx
+│   │   │   │	│   └── Accordion.css                            # Shared small components
+│   │   │   │	├── Button.jsx
+│   │   │   │	├── InputField.jsx
+│   │   │   │	├── Spinner.jsx
+│   │   │   │	└── Table.jsx
+│   │   │   │
+│   │   │ 	├── layout/                                             # Layout-level components
+│   │   │   │	├── Navbar.jsx
+│   │   │   │	├── Sidebar.jsx
+│   │   │   │	├── Foodter.jsx
+│   │   │   │	└── ProtectRoute.jsx                                      # Role-based route guard
+│   │   │ 	├── models/                                             # Layout-level components
+│   │   │   │	├── ModelDelete.jsx
+│   │   │   │	├── ModalConfirm.jsx
+│   │   │   │	└── ModalForm.jsx     
+│   │   │ 	├── charts/                                             # Layout-level components
+│   │   │   │	├── ModelDelete.jsx
+│   │   │   │	├── ModalConfirm.jsx
+│   │   │   │	└── ModalForm.jsx     
+│   │   │   └── Notifications/                     
+│   │   │       ├── Toast.jsx
+│   │   │       └── NotificationBell.jsx    
+│   │   │   
 │   ├── pages/	
-│   │ 	├── Auth/                                     # Page-level components
+│   │ 	├── Auth/                                              # Page-level components
 │   │   │   ├── Login.jsx                    
 │   │  	│   ├── Register.jsx                     
 │   │   │   ├── login.schema.js                 
 │   │   │   └── register.schema.js
 │   │ 	├── Patients/
 │   │   │   ├── PatientList.jsx                    
-│   │  	│   ├── PatientFrom.jsx                       # Fixed spelling "Form"
+│   │  	│   ├── PatientFrom.jsx                               # Fixed spelling "Form"
 │   │   │   ├── patient.api.js           
 │   │   │   └── patient.schema.js
 │   │   ├── Doctors/
