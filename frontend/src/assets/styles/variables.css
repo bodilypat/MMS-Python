@@ -23,3 +23,55 @@
     --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
     --shadow-medium: 0 2px 6px rgba(0,0,0,0.15);
 }
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1rem;
+}
+
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+/* Spinner sizes */
+.spinner-container.sm .spinner {
+    width: 18px;
+    height: 18px;
+}
+.spinner-container.md .spinner {
+    width: 50px;
+    height: 50px
+}
+
+/* Variants */
+.spinner.primary {
+    border-top-color: var(--color-primary);
+}
+.spinner.secondary {
+    border-top-color: var(--color-secondary);
+}
+.spinner.light {
+    border-top-color: #fff;
+}
+.spinner.dark {
+    border-top-color: #fff;
+}
+
+/* Text */
+.spinner-text {
+    font-size: 0.95rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+/* Animation */
+@keyframes  spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
