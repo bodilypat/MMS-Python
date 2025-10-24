@@ -121,7 +121,7 @@ Full-Stack-Medical-Management-System-Directory-Structure
 │   │   │ 	├── layout/                                             # Layout-level components
 │   │   │   │	├── Navbar.jsx
 │   │   │   │	├── Sidebar.jsx
-│   │   │   │	├── Foodter.jsx
+│   │   │   │	├── Footer.jsx
 │   │   │   │	└── ProtectRoute.jsx                                      # Role-based route guard
 │   │   │ 	├── models/                                             # Layout-level components
 │   │   │   │	├── ModelDelete.jsx
