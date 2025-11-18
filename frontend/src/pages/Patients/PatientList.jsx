@@ -1,104 +1,60 @@
 //src/pages/Patients/PatientList.jsx
 
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-    getPatient,
-    deletePatient,
-} from "../../services/patientService";
-import Spinner from "../../components/common/Spinner";
-import Table from "../../components/common/Table";
-import ModalConfirm from "../../components/modals/ModalConfirm";
-import { formatPhoneNumber } from "../../utils/formatters";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import patientApi from '../../api/patientApi';
+import PatientTable from '../../components/tables/PatientTable';
+import SearchBar from '../../components/ui/SearchBar';
+import Pagination from '../../components/ui/Pagination';
 
-export default function PatientList() {
-    const navigate = useNavigate();
+const PatientList = () => {
     const [patients, setPatients] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedPatient, setSelectPatient] = useState(null);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const navigate = useNavigate();
+    const pageSize = 10;
 
-    /* Fetch all patients on boad */
-    useEffect(() => {
-        fetchPatients();
-    }, []);
-
-    const fetchPatients = async () => {
+    const fetchPatients = async (page, query) => {
+        setLoading(true);
         try {
-            setLoading(true);
-            const response = await getPatients();
-            setPatients(response.data || []);
+            const response = await patientApi.getPatients({ page, pageSize, query });
+            setPatients(response.data.patients);
+            setTotalPages(response.data.totalPages);
         } catch (error) {
-            console.error("Error fetching patients:", error);
+            console.error('Error fetching patients:', error);
         } finally {
             setLoading(false);
         }
     };
+    useEffect(() => {
+        fetchPatients(currentPage, searchQuery);
+    }, [currentPage, searchQuery]);
 
-    const handleAdd = () => navigate("/patients/new");
-    const handleEdit = (patient) => navigate(`/patients/edit/${patient.id}`);
-
-    const handleDelete = async () => {
-        try {
-            await deletePatient(selectedPatient.id);
-            setShowDeleteModal(false);
-            fetchPatients();
-        } catch (error) {
-            console.error("Error deleting patient:", error);
-        }
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        setCurrentPage(1);
     };
-
-    if (loading) return <Spinner />;
-
+    const handleRowClick = (patientId) => {
+        navigate(`/patients/${patientId}`);
+    };
     return (
-        <div className="Container mt-4">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2 className="mb-0">Patients</h2>
-                <button className="btn btn-primary" onClick={handleAdd}>+ Add Patient</button>
-            </div>
-
-            {patients.length === 0 ? (
-                <p className="text-center mt-4">No patients found.</p>
-            ) : (
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Age</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>City</th>
-                            <th className="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {patients.map((p) => (
-                        <tr key={p.id}>
-                            <td>{p.full_name}</td>
-                            <td>{p.gender}</td>
-                            <td>{p.age}</td>
-                            <td>{formatPhoneNumber(p.phone)}</td>
-                            <td>{p.email}</td>
-                            <td>{p.city}</td>
-                            <td className="text-center">
-                                <button className="btn btn-sm btn-outline-secondary me-2" onClick={() => handleEdit(p)}>Edit</button>
-                                <button className="btn bn-sm btn-outline-danger" onClick={() => {setSelectPatient(p); setShowDeleteModal(true); }}>Delete</button>
-                            </td>
-                        </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            )}
-
-            {/* Confirm Delete Modal */}
-            {showDeleteModal && (
-                <ModalConfirm 
-                    title="Confirm Delete" 
-                    message={`Are you sure you want to delete ${selectedPatient.full_name}?`} 
-                    onConfirm={handleDelete}
-                    onCancel={() => setShowDeleteModal(false)} />
-            )}
+        <div>
+            <h1>Patient List</h1>
+            <SearchBar onSearch={handleSearch} />
+            <PatientTable
+                patients={patients}
+                loading={loading}
+                onRowClick={handleRowClick}
+            />
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
-}
+};
+
+export default PatientList;
