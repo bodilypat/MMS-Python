@@ -1,67 +1,113 @@
 //src/pages/Appointments/AppointmentList.jsx 
 
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAppointments, deleteAppointment } from "./appointment.api";
+import React, { useEffect, useState } from 'react';
+import appointmentAPI from '../../api/appointmentAPI';
+import AppointmentTable from '../../components/tables/AppointmentTable';
+import Pagination from '../../components/ui/Pagination';
+import SearchBar from '../../components/ui/SearchBar';
 
-export default function AppointmentList() {
-    const [appointments, setAppointments] = useState([]);
+const AppointmentList = () => {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        loadAppointments();
-    }, []);
+    /* State for appointments data */
+    const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [searchQuery, setSearchQuery] = useState(''); 
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [dateFilter, setDateFilter] = useState(null);
 
-    const loadAppointments = async () => {
+    const AppointmentList = async () => {
+        const navigate = useNavigate();
+
+    /* State for appointments data */
+    const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [filters, setFilters] = useState({
+        status: "",
+        doctor_id: "",
+        patient_id: "",
+        date_from: "",
+        date_to: ""     
+    });
+    /* Fetch appointments from API */
+    const fetchAppointments = async () => {
+        setLoading(true);
         try {
-            const response = await getAppointments();
+            const response = await appointmentAPI.getAppointments({
+                page: currentPage,
+                search: searchQuery,
+                filters: filters
+            });
+
             setAppointments(response.data);
-        } catch(error) {
-            console.error("Failed to fetch appointments:", error);
+            setTotalPages(response.totalPages);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
+    useEffect(() => {
+        fetchAppointments();
+    }, [currentPage, searchQuery, filters]);
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this appointment?")) return;
-        try {
-            await deleteAppointment(id);
-            loadAppointments();
-        } catch (error) {
-            console.error("Delete failed:", error);
-        }
+    /* Handlers */
+    const handleAdd = () => {
+        navigate('/appointments/add');
+    };
+
+    const handleEdit = (appointmentId) => {
+        navigate(`/appointments/edit/${appointmentId}`);
+    };
+
+    const handleView = (appointmentId) => {
+        navigate(`/appointments/view/${appointmentId}`);
+    };
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        setCurrentPage(1); 
+    };
+    const handleFilterChange = (newFilters) => {
+        setFilters(newFilters);
+        setCurrentPage(1);
+    };
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
     };
 
     return (
-        <div className="container mt-5">
-            <h2>Appointments</h2>
-            <button className="btn btn-success mb-3" onClick={() => navigate("/appointments/new")}> + New Appointment </button>
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Patient</th>
-                        <th>Doctor</th>
-                        <th>Date & Time</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {AppointmentList.map((a) => (
-                        <tr key={a.appointment_id}>
-                            <td>{a.appointment_id}</td>
-                            <td>{a.patient_name}</td>
-                            <td>{a.doctor_name}</td>
-                            <td>{new date(a.appointment_datetime).toLocaleString()}</td>
-                            <td>{a.status}</td>
-                            <td>
-                                <button className="btn btn-primary btn-sm me-2" onClick={() => navigate(`/appointments/edit/${a.appointment_id}`)}>Edit</button>
-                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(a.appointment_id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div>
+            <h1>Appointment List</h1>
+            <button onClick={handleAdd}>Add Appointment</button>    
+            <SearchBar onSearch={handleSearch} />
+            <FilterBar onFilterChange={handleFilterChange} />
+            {loading ? (
+                <p>Loading...</p>
+            ) : error ? (
+                <p>Error: {error}</p>
+            ) : (
+                <>
+                    <AppointmentTable
+                        appointments={appointments}
+                        onEdit={handleEdit}
+                        onView={handleView}
+                    />
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                </>
+            )}
         </div>
     );
-}
+};
+
+export default AppointmentList;
+
