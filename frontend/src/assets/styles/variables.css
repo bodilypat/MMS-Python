@@ -1,77 +1,40 @@
+/****src/assets/styles/variables.css ****/
 :root {
-    /* Color */
-    --color-primary: #1976d2;
-    --color-secondary: #0288d1;
-    --color-bg: #f5f6fa;
-    --color-text: #333;
-    --color-sidebar-bg: #ffffff;
-    --color-border: #e0e0e0;
-    --color-success: #43a047;
-    --color-danger: #e53935;
+    --primary-color: #3490dc;
+    --secondary-color: #ffed4a;
+    --success-color: #38c172;
+    --danger-color: #e3342f;
+    --warning-color: #f6993f;
+    --info-color: #6cb2eb;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --muted-color: #6c757d;
 
-    /* Typography */
-    --font-family: 'Poppins', sans-serif;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --font-size-base: 16px;
+    --font-size-sm: 14px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
 
-    /* Spacing */
-    --spacing-xs: 4px;
+    --line-height-base: 1.5;
+    --heading-font-weight: 700;
+    --font-weight-normal: 400;
+    --font-weight-light: 300;
+
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
+    --spacing-xl: 32px;
 
-    /* Shadows */
-    --shadow-light: 0 1px 3px rgba(0,0,0,0.1);
-    --shadow-medium: 0 2px 6px rgba(0,0,0,0.15);
-}
+    --border-radius: 4px;
+    --border-color: #dee2e6;
 
-.spinner-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    padding: 1rem;
-}
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-.spinner {
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top: 3px solid var(--color-primary);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-}
-/* Spinner sizes */
-.spinner-container.sm .spinner {
-    width: 18px;
-    height: 18px;
-}
-.spinner-container.md .spinner {
-    width: 50px;
-    height: 50px
-}
+    --transition-duration: 0.3s;
 
-/* Variants */
-.spinner.primary {
-    border-top-color: var(--color-primary);
-}
-.spinner.secondary {
-    border-top-color: var(--color-secondary);
-}
-.spinner.light {
-    border-top-color: #fff;
-}
-.spinner.dark {
-    border-top-color: #fff;
-}
-
-/* Text */
-.spinner-text {
-    font-size: 0.95rem;
-    color: var(--color-text);
-    font-weight: 500;
-}
-
-/* Animation */
-@keyframes  spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+}   
