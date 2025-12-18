@@ -1,60 +1,67 @@
 #app/schemas/patient.py
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr
 from typing import Optional
-from datetime import date, datetime 
-from enum import Enum
+from datetime import date, datetime
 
-# ENUM
-class GenderEnum(str, Enum):
-    male = "male"
-    female= "female"
-    other = "other"
-
-class PatientStatusEnum(str, Enum):
-    active = "active"
-    inactive = "inactive"
-    deceased = "deceased"
-
-# BASE SCHEM 
+#---------------------------------------
+# Patient Base Schema (shared fields)
+#---------------------------------------
 class PatientBase(BaseModel):
-    first_name: str = Field(..., max_length=100, description="Patient's first name")
-    last_name: str = Field(..., max_length=100, description="Patient's last name")
-    date_of_birth: date 
-    gender: GenderEnum
-    phone_number: str = Field(..., min_length=7, max_length=20)
-    email: Optional[EmailStr] = None 
-    address: Optional[str] = Field(None, max_length=255)
-    primary_care_physician: Optional[str] = Field(None, max_length=100)
-    medical_history: Optional[str] = None 
+    first_name: str
+    last_name: str
+    gender: str
+    date_of_birth: date
+    email: EmailStr
+    phone_number: Optional[str] = None
+    address: Optional[str] = None
+    blood_group: Optional[str] = None
     allergies: Optional[str] = None
-    status: Optional[PatientStatusEnum] = PatientStatusEnum.active
+    emergency_contact: Optional[str] = None
+    medical_history: Optional[str] = None
+    current_medications: Optional[str] = None
+    is_active: bool = True
+    is_deleted: bool = False
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
-# CREATE 
-
+#---------------------------------------
+# Patient Create Schema
+#---------------------------------------
 class PatientCreate(PatientBase):
-    pass 
+    user_id: Optional[int] = None
 
-# UPDATE 
-class PatientUpdate(BaseModel):
-    first_name: Optional[str] = Field(None, max_length=100)
-    last_name: Optional[str] = Field(None, max_length=100)
-    date_of_birth: Optional[date] = None 
-    gender: Optional[GenderEnum]
-    phone_number: Optional[str] =Field(None, min_length=7, max_length=20)
-    email: Optional[EmailStr] = None 
-    address: Optional[str] = Field(None, max_length=255)
-    primary_care_physician: Optional[str] = Field(None, max_length=100)
-    medical_history: Optional[str] = None 
-    status: Optional[PatientStatusEnum] = None
+#---------------------------------------
+# Patient Update Schema details
+#---------------------------------------
+class PatientUpdate(PatientBase):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    gender: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    phone_number: Optional[str] = None
+    email: Optional[EmailStr] = None
+    address: Optional[str] = None
+    blood_group: Optional[str] = None
+    allergies: Optional[str] = None
+    emergency_contact: Optional[str] = None
+    medical_history: Optional[str] = None
+    current_medications: Optional[str] = None
+    is_active: Optional[bool] = None
+    is_deleted: Optional[bool] = None
+    updated_at: Optional[datetime] = None
+    user_id: Optional[int] = None
 
-# OUTPUT SCHEMA 
-class PatientOut(PatientBase):
-    patient_id: int
-    created_at: Optional[datetime] = None 
-    updated_at: Optional[datetime] = None 
-
+#---------------------------------------
+# Patient Response Schema patient info
+#---------------------------------------
+class PatientResponse(PatientBase):
+    id: int
+    user_id: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
+    
     class Config:
-        orm_mode = True 
+        orm_mode = True
 
-        
+

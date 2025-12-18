@@ -1,68 +1,52 @@
 #app/schemas/doctor.py
 
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional 
-from datetime import date 
-from enum import Enum 
+from pydantic import BaseModel, EmailStr
+from typing import Optional
+from datetime import date
 
-#ENUMS
-class GenderEnum(str, Enum):
-    male = "male"
-    female = "female"
-    other = "other"
-
-class DoctorStatusEnum(str, Enum):
-    active = "Active"
-    inactive = "inactive"
-    retired = "retired"
-    on_leave = "on_leave"
-
-# BASE SCHEMA 
+#---------------------------------------
+# Base Doctor Schema (shared attributes)
+#---------------------------------------
 class DoctorBase(BaseModel):
-    first_name: str = Field(..., max_length=100, description="Doctor's first name")
-    last_name: str = Field(..., max_length=100, description="Doctor's last name")
-    specialization: str = Field(..., max_length=100, description="Doctor's specialization or field")
-    department: Optional[str] = Field(None, max_length=100, description="Department or unit")
-    phone_number: str = Field(..., min_length=7, max_length=20, description="Doctor's contact number")
-    birthdate: Optional[date] = None
-    gender: GenderEnum = GenderEnum.other 
-    email: Optional[EmailStr] = Field(None, max_length=150)
-    address: Optional[str] = Field(None, max_length=255)
-    status: DoctorStatusEnum = DoctorStatusEnum.active 
-    hire_date: Optional[date] = None 
-    note: Optional[str] = Field(None, max_length=1000)
+    first_name: str
+    last_name: str
+    specialty: Optional[str] = None
+    license_number: str
+    email: EmailStr
+    phone_number: Optional[str] = None
+    experience_years: Optional[int] = None
+    address: Optional[str] = None
+    is_active: bool = True
 
-# CREATE 
+#---------------------------------------
+# Doctor Creation Schema
+#---------------------------------------
 class DoctorCreate(DoctorBase):
-    created_by: Optional[int] = None 
-    updated_by: Optional[int] = None 
+    user_id: int # Assuming each doctor is linked to a user account
 
-# UPDATE 
-class DoctorUpdate(BaseModel):
-    first_name: Optional[str] = Field(None, max_length=100)
-    last_name: Optional[str] = Field(None, max_length=100)
-    specialization: Optional[str] = Field(None, max_length=100)
-    department: Optional[str] = Field(None, max_length=100)
-    email: Optional[str] = Field(None, max_length=150)
-    phone_number: Optional[str] = Field(None, min_length=7, max_length=20)
-    birthdate: Optional[date] = None 
-    gender: Optional[GenderEnum] = None 
-    address: Optional[str] = Field(None, max_length=255)
-    status: Optional[DoctorStatusEnum] = None
-    hire_date: Optional[date] = None 
-    retirement_date: Optional[date] = None 
-    notes: Optional[str] = Field(None, max_length=1000)
-    updated_by: Optional[int] = None
+#---------------------------------------
+# Doctor Update Schema
+#---------------------------------------
+class DoctorUpdate(DoctorBase):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    specialty: Optional[str] = None
+    license_number: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
+    experience_years: Optional[int] = None
+    address: Optional[str] = None
+    is_active: Optional[bool] = None
 
-#OUTPUT
+#---------------------------------------
+# Schema for returning Doctor data
+#---------------------------------------
 class DoctorOut(DoctorBase):
-    doctor_id: int 
-    created_at: Optional[date]
-    updated_at: Optional[date]
-
+    id: int
+    user_id: int
+    created_at: date
+    updated_at: date
+    
     class Config:
         orm_mode = True
-
-        
-
 

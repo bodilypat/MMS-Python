@@ -1,48 +1,53 @@
 #app/schemas/medical_record.py
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
-from enum import Enum 
 
-# ENUM
-class MedicalRecordStatus(str, Enum):
-    active = "Active"
-    archived = "Archived"
-    inactive = "Inactive"
-
-# BASE SCHEMA 
+#--------------------------------------
+# Base Medical Record Schema
+#--------------------------------------
 class MedicalRecordBase(BaseModel):
-    patient_id: int 
-    appointment_id: int 
-    diagnosis: Optional[str] = Field(None, max_length=500)
-    treatment_plan: Optional[str] = None 
-    note: Optional[str] = None
-    status: MedicalRecordStatus = MedicalRecordStatus.active 
-    attachment: Optional[str] = Field(None, max_length=255)
+    patient_id: int
+    doctor_id: int
+    appointment_id: Optional[int] = None
+    diagnosis: str
+    symptoms: Optional[str] = None
+    treatment: Optional[str] = None
+    notes: Optional[str] = None
+    record_type: Optional[str] = "consultation"  # consultation | lab | imaging | surgery | follow-up
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
-    created_by: Optional[int] = None 
-    updated_by: Optional[int] = None 
-
-# CREATE SCHEMA 
+#--------------------------------------
+# Medical Record Create Schema
+#--------------------------------------
 class MedicalRecordCreate(MedicalRecordBase):
-    pass 
+    pass # Inherits all fields from MedicalRecordBase
 
-#UPDATE 
-class MedicalRecordUpdate(BaseModel):
-    diagnosis: Optional[str] = Field(None, max_length=500)
-    treatment_plan: Optional[str] = None 
-    note: Optional[str] = None 
-    status: Optional[MedicalRecordStatus] = None 
-    attachments: Optional[str] = Field(None, max_length=255)
-    updated_by: Optional[int] = None 
+#--------------------------------------
+# Medical Record Update Schema
+#--------------------------------------
+class MedicalRecordUpdate(MedicalRecordBase):
+    patient_id: Optional[int] = None
+    doctor_id: Optional[int] = None
+    appointment_id: Optional[int] = None
+    diagnosis: Optional[str] = None
+    symptoms: Optional[str] = None
+    treatment: Optional[str] = None
+    notes: Optional[str] = None
+    record_type: Optional[str] = None # consultation | lab | imaging | surgery | follow-up
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
-# RESPONSE SCHEMA 
-class MedicalRecordOut(MedicalRecordBase):
-    medical_record_id: int 
+#-----------------------------------------
+# Schema for returning medical information 
+# ----------------------------------------
+class MedicalRecordResponse(MedicalRecordBase):
+    id: int
     created_at: datetime
     updated_at: datetime
+    
 
     class Config:
-        orm_mode = True 
-        
+        orm_mode = True

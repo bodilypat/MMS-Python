@@ -1,68 +1,67 @@
 #app/schemas/billing.py
 
-from pydantic import BaseModel, Field 
-from typing import List, Optional
-from enum import Enum 
-from datetime import datetime 
+from pydantic import BaseModel
+from typing import Optional
+from datetime import date
 
-#ENUM
-class PaymentStatus(str, Enum):
-    pending = "pending"
-    paid = "paid"
-    cancelled = "cancelled"
-
-class PaymentMethod(str, Enum):
-    cash = "cash"
-    card = "card"
-    isurance = "insurance"
-    upi = "upi"
-
-# Bill Item Schema 
-class BillItemBase(BaseModel):
-    description: str = Field(..., max_length=255)
-    cost: float = Field(..., get=0)
-    quantity: int = Field(default, ge=1)
-
-class BillItemCreate(BillItemBase):
-    pass 
-
-class BillItemOut(BillItemBase):
-    id : int 
-
-    class Config:
-        orm_mode = True 
-
-#Main Bill Schema 
-class BillBase(BaseModel):
-    patient_id: int 
+#---------------------------------------
+# Base Billing Schema
+#---------------------------------------
+class BillingBase(BaseModel):
+    patient_id: int
     appointment_id: Optional[int] = None
-    method: PaymentMethod = PaymentMethod.cash 
-    notes: Optional[str] = Field(None, max_length=25)
-    status: Optional[PaymentStatus] = PaymentStatus.pending
-    created_by: Optional[int] = None 
-    updated_by: Optional[int] = None 
-    items: Optional[BillItemCreate]
+    prescription_id: Optional[int] = None
+    total_amount: float
+    paid_amount: Optional[float] = 0.0
+    due_amount: Optional[float] = None
+    payment_status: Optional[str] = "Pending" # |pending | paid | partial_paid | cancelled 
+    payment_method: Optional[str] = None # | cash | card | insurance | online
+    insurance_provider: Optional[str] = None
+    insurance_claim_number: Optional[str] = None
+    billing_date: Optional[date] = None
+    notes: Optional[str] = None
+    created_by: Optional[int] = None
+    updated_by: Optional[int] = None
+    is_active: Optional[bool] = True
 
-class BillCreate(BaseBase):
-    pass 
+#---------------------------------------
+# Billing Create Schema
+class BillingCreate(BillingBase):
+    pass # Inherits all fields from BillingBase for creation
 
-class BillUpdateStatus(BaseModel):
-    sttus: PaymentStatus
-
-class BillOut(BaseModel):
-    id: int 
-    patient_id: int 
-    appointment_id: Optional[int] 
-    method: PaymentMethod
-    notes: Optional[str] 
-    status: PaymentStatus 
-    amount: float 
-    issued: datetime 
+#---------------------------------------
+# Billing Update Schema
+#---------------------------------------
+class BillingUpdate(BillingBase):
+    patient_id: Optional[int]
+    appointment_id: Optional[int]
+    prescription_id: Optional[int]
+    total_amount: Optional[float]
+    paid_amount: Optional[float]
+    due_amount: Optional[float]
+    payment_status: Optional[str]
+    payment_method: Optional[str]
+    insurance_provider: Optional[str]
+    insurance_claim_number: Optional[str]
+    billing_date: Optional[date]
+    notes: Optional[str]
     created_by: Optional[int]
     updated_by: Optional[int]
-    items: List[BillItemOut]
+    is_active: Optional[bool]
+
+#---------------------------------------
+# Billing Response Schema
+#---------------------------------------
+class BillingResponse(BillingBase):
+    id: int
+    created_at: datetime 
+    updated_at: datetime
+    
 
     class Config:
-        orm_mode = True 
+        orm_mode = True
 
-        
+
+
+
+    
