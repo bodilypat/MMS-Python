@@ -1,57 +1,73 @@
 #app/services/doctor_service.py
 
 from sqlalchemy.orm import Session
-from app.schemas.doctor import DoctorCreate, DoctorUpdate, DoctorRead 
-from app.models.doctor import Doctor 
 from typing import List, Optional
-from passlib.context import CryptContext
+from app.models.doctor import Doctor
+from app.schemas.doctor import DoctorCreate, DoctorUpdate
 
-pwd_context = CryptContext(schemas=["bcrypt"], depredecated="auto")
+#-----------------------------------
+# Create a new doctor
+#-----------------------------------
+def create_doctor(db: Session, doctor: DoctorCreate) -> Doctor:
+    db_doctor = Doctor(**doctor.dict())
+    db.add(db_doctor)
+    db.commit()
+    db.refresh(db_doctor)
+    return db_doctor
+#-----------------------------------
+# Get a doctor by ID
+#-----------------------------------
+def get_doctor(db: Session, doctor_id: int) -> Optional[Doctor]:
+    return db.query(Doctor).filter(Doctor.id == doctor_id).first()
 
-class DoctorService:
-    def __init__(self, db: Session):
-        self.db = db
+#-----------------------------------
+# Get all doctors
+#-----------------------------------
+def get_doctors(db: Session, skip: int = 0, limit: int = 100) -> List[Doctor]:
+    return db.query(Doctor).offset(skip).limit(limit).all()
+#-----------------------------------
+# Update a doctor
+#-----------------------------------
+def update_doctor(db: Session, doctor_id: int, doctor_update: DoctorUpdate) -> Optional[Doctor]:
+    db_doctor = db.query(Doctor).filter(Doctor.id == doctor_id).first()
+    if db_doctor:
+        for key, value in doctor_update.dict(exclude_unset=True).items():
+            setattr(db_doctor, key, value)
+        db.commit()
+        db.refresh(db_doctor)
+    return db_doctor
 
-    def get_all_doctors(self, skip: int = 0, limit: int = 10) -> Optional[Doctor]:
-        return self.db.query(Doctor).offset(skip).limit(limit).all()
-    
-    def get_doctor_by_id(self, doctor_id: int) -> Optional[Doctor]:
-        return self.db.query(Doctor).filter(Doctor.id == doctor_id).first()
-    
-    def get_doctor_by_email(self, doctor_email: str) ->Optional[Doctor]:
-        return self.db.query(Doctor).filter(Doctor.id == doctor_email).first()
-    
-    def create_doctor(self, doctor_info: DoctorCreate) -> Doctor:
-        hashed_password = pwd_context.hash(doctor_info.password)
-        db_doctor = Doctor(
-            email = doctor_info.email,
-            hashed_password = doctor_info.password,
-            full_name = doctor_info.full_name,
-            is_active = doctor_info.is_active,
-        )
-        self.db.add(Doctor)
-        self.db.commit()
-        self.db.refresh(Doctor)
-        return db_doctor
-    
-    def update_doctor(self, doctor_id: int, updated_doctor: DoctorUpdate) ->Optional[Doctor]:
-        doctor = self.db.query(Doctor).filter(Doctor.id == doctor_id).first()
-        if not doctor:
-            return None
-        
-        for field, value in updated_doctor.dict(exclude_unset=True).items():
-            setattr(guest, field, value)
+#-----------------------------------
+# Delete a doctor
+#-----------------------------------
+def delete_doctor(db: Session, doctor_id: int) -> Optional[Doctor]:
+    db_doctor = db.query(Doctor).filter(Doctor.id == doctor_id).first()
+    if db_doctor:
+        db.delete(db_doctor)
+        db.commit()
+    return db_doctor
 
-        self.db.commit(doctor)
-        self.db.refresh(doctor)
-        return doctor
-    
-    def delete_doctor(self, doctor_id: int) -> Optional[Doctor]:
-        doctor = self.db.query(Doctor).filter(Doctor.id == doctor_id).first()
+#-----------------------------------
+# Find doctors by specialty
+#-----------------------------------
+def find_doctors_by_specialty(db: Session, specialty: str) -> List[Doctor]:
+    return db.query(Doctor).filter(Doctor.specialty == specialty).all()
 
-        if not doctor:
-            return False 
-        
-        self.db.delete(doctor)
-        self.db.commit()
-        return True
+#-----------------------------------
+# Find doctors by name
+#-----------------------------------
+def find_doctors_by_name(db: Session, name: str) -> List[Doctor]:
+    return db.query(Doctor).filter(Doctor.name.ilike(f"%{name}%")).all()
+
+#-----------------------------------
+# Get doctors by availability
+#-----------------------------------
+def get_doctors_by_availability(db: Session, available: bool) -> List[Doctor]:
+    return db.query(Doctor).filter(Doctor.is_available == available).all()
+
+#-----------------------------------
+# Count total number of doctors
+#-----------------------------------
+def count_doctors(db: Session) -> int:
+    return db.query(Doctor).count()
+

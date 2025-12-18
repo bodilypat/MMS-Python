@@ -1,49 +1,92 @@
 #app/services/medical_record_service.py
 
-from sqlalchemy.orm import Session 
-from app.schemas.medical_record import MedicalRecordCreate, MedicalRecordUpdated 
-from app.models.medical_record import  MedicalRecord
+from sqlalchemy.orm import Session
 from typing import List, Optional
+from app.models.medical_record import MedicalRecord
+from app.schemas.medical_record import MedicalRecordCreate, MedicalRecordUpdate
 
-class MedicalRecordService:
-    def __init__(self, db: Session):
-        self.db = db 
+#------------------------------------------
+# Create a new medical record
+#------------------------------------------
+def create_medical_record(db: Session, record: MedicalRecordCreate) -> MedicalRecord:
+    db_record = MedicalRecord(**record.dict())
+    db.add(db_record)
+    db.commit()
+    db.refresh(db_record)
+    return db_record
 
-    def get_medical_records(self, skip: int = 0, limit: int = 10) ->List[MedicalRecord]:
-        return self.db.query(MedicalRecord).offset(skip).limit(limit).all()
-    
-    def get_medical_record_by_id(self, medical_record_id: int) -> Optional[MedicalRecord]:
-        return self.db.query(MedicalRecord).filter(MedicalRecord.id == medical_record_id).first()
-    
-    def create_medical_record(self, medical_record_info: MedicalRecordCreate) -> Optional[MedicalRecord]:
-        new_medical_record = MedicalRecord(**medical_record_info.dict())
+#------------------------------------------
+# Get a medical record by ID
+#------------------------------------------
+def get_medical_record(db: Session, record_id: int) -> Optional[MedicalRecord]:
+    return db.query(MedicalRecord).filter(MedicalRecord.id == record_id).first()
 
-        self.db.add(new_medical_record)
-        self.db.commit()
-        self.db.refresh(new_medical_record)
-        return new_medical_record
-    
-    def update_medical_record(self, medical_record_id: int, updated_medical_record: MedicalRecordCreate) -> Optional[MedicalRecord]:
-        medical_record = self.db.query(MedicalRecord).filter(MedicalRecord.id == medical_record_id).first()
+#------------------------------------------
+# Get all medical records
+#------------------------------------------
+def get_medical_records(db: Session, skip: int = 0, limit: int = 100) -> List[MedicalRecord]:
+    return db.query(MedicalRecord).offset(skip).limit(limit).all()
 
-        if not medical_record:
-            return None
-        
-        for field, value in updated_medical_record.dict(exclude_unset=True).items():
-            setattr(medical_record, field, value)
+#------------------------------------------
+# Update a medical record
+#------------------------------------------
+def update_medical_record(db: Session, record_id: int, record_update: MedicalRecordUpdate) -> Optional[MedicalRecord]:
+    db_record = db.query(MedicalRecord).filter(MedicalRecord.id == record_id).first()
+    if db_record:
+        for key, value in record_update.dict(exclude_unset=True).items():
+            setattr(db_record, key, value)
+        db.commit()
+        db.refresh(db_record)
+    return db_record
 
-        self.db.commit()
-        self.db.refresh(medical_record)
-        return medical_record 
-    
-    def delete_medical_record(self, medical_record_id: int) -> Optional[MedicalRecord]:
-        medical_record = self.db.query(MedicalRecord).filter(MedicalRecord.id == medical_record_id).first()
-
-        if not medical_record:
-            return False 
-        
-        self.db.delete(medical_record)
-        self.db.commit()
+#------------------------------------------
+# Delete a medical record
+#------------------------------------------
+def delete_medical_record(db: Session, record_id: int) -> bool:
+    db_record = db.query(MedicalRecord).filter(MedicalRecord.id == record_id).first()
+    if db_record:
+        db.delete(db_record)
+        db.commit()
         return True
-    
-    
+    return False
+
+#------------------------------------------
+# Search medical records by patient name
+#------------------------------------------
+def search_medical_records_by_patient_name(db: Session, patient_name: str) -> List[MedicalRecord]:
+    return db.query(MedicalRecord).filter(MedicalRecord.patient_name.ilike(f"%{patient_name}%")).all()
+
+#------------------------------------------
+# Get medical records by date range
+#------------------------------------------
+def get_medical_records_by_date_range(db: Session, start_date: str, end_date: str) -> List[MedicalRecord]:
+    return db.query(MedicalRecord).filter(MedicalRecord.record_date.between(start_date, end_date)).all()
+
+#------------------------------------------
+# Count total medical records
+#------------------------------------------
+def count_medical_records(db: Session) -> int:
+    return db.query(MedicalRecord).count()
+
+#------------------------------------------
+# Get medical records by diagnosis
+#------------------------------------------
+def get_medical_records_by_diagnosis(db: Session, diagnosis: str) -> List[MedicalRecord]:
+    return db.query(MedicalRecord).filter(MedicalRecord.diagnosis.ilike(f"%{diagnosis}%")).all()
+
+#------------------------------------------
+# Get recent medical records
+#------------------------------------------
+def get_recent_medical_records(db: Session, days: int) -> List[MedicalRecord]:
+    from datetime import datetime, timedelta
+    cutoff_date = datetime.now() - timedelta(days=days)
+    return db.query(MedicalRecord).filter(MedicalRecord.record_date >= cutoff_date).all()
+
+#------------------------------------------
+# Get medical records by doctor ID
+#------------------------------------------
+def get_medical_records_by_doctor_id(db: Session, doctor_id: int) -> List[MedicalRecord]:
+    return db.query(MedicalRecord).filter(MedicalRecord.doctor_id == doctor_id).all()
+
+
+
