@@ -1,74 +1,40 @@
 #app/models/billing.py
 
-from sqlalchemy import (
-    Column, 
-    Integer,
-    Float,
-    String,
-    ForeignKey,
-    DateTime,
-    Enum as SqlEnum,
-    func
-)
+from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey, Boolean, Text
 from sqlalchemy.orm import relationship
-from aapp.db.base import Base
-import enum
+from datetime import datetime
 
-# ENUM
-class PaymentStatusEnum(str, enum.Enum):
-    pending = "pending"
-    paid = "paid"
-    cancelled = "cancelled"
+from .base import Base
 
-class PaymentMethodEnum(str, enum.Enum):
-    cash = "cash"
-    card = "card"
-    insurance = "insurance"
-    upi = "upi"
+class Billing(Base):
+    __tablename__ = 'billings'
 
-#BILL MODEL 
-class Bill(Base):
-    __tablename__= "bills"
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    appointment_id = Column(Integer, ForeignKey("appointments.appointment_id"), nullable=True)
+    id = Column(Integer, primary_key=True, index=True)
 
-    amount = Column(Float, nullable=False)
-    status = Column(SqlEnum(PaymentStatusEnum, name="payment_status_enum"), default=PaymentStatusEnum.pending, nullable=False)
-    method = Column(SqlEnum(PaymentMethodEnum, name="payment_method_enum"), default=PaymentMethodEnum.cash, nullable=False)
+    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
+    appointment_id = Column(Integer, ForeignKey('appointments.id'), nullable=False)
+    prescription_id = Column(Integer, ForeignKey('prescriptions.id'), nullable=True)
 
-    notes = Column(String(255), nullable=True)
-    issued_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    total_amount = Column(Float, nullable=False)
+    paid_amount = Column(Float, nullable=False, default=0.0)
+    due_amount = Column(Float, nullable=False)
 
-    created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
-    updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
+    payment_status = Column(String(50), nullable=False)  # 'pending' 'paid', 'partially_paid', 'cancelled'
+    payment_method = Column(String(50), nullable=True)  # 'credit_card', 'cash', 'insurance'
+    insurance_provider = Column(String(100), nullable=True)
+    insurance_claim_number = Column(String(100), nullable=True)
+    is_active = Column(Boolean, default=True)
 
-    createdt_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    notes = Column(Text, nullable=True)
 
-    # Relationships 
-    items = relationship("BillItem", back_populates="bill", cascade="all, delete-orphan", lazy="joined")
-    patient = relationship("Patient", back_populates="bills", lazy="joined")
-    appointment = relationship("Appointment", back_populates="bills", lazy="joined")
-    creator = relationship("User", foreign_keys=[created_by], lazy="joined")
-    updater = relationship("User", Foreign_keys=[updated_by], lazy="joined")
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    def __repr_(self):
-        return f"<Bill(id={self.id}, patient_id={sale.patient_id}, amount={self.amount}, status={self.status})>"
-    
-# BILL ITEM MODEL 
-class BillItem(Base):
-    __tablename__ = "bill_items"
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    bill_id = Column(Integer, ForeignKey("bills.id", ondelet="CASCADE"), nullable=False)
-
-    description = Column(String(255), nullable=False)
-    cost = Column(Float, nullable=False)
-    quantity = Column(Integer, default=1, nullable=False)
-
-    # Relationship
-    bill = relationship("Bill", back_populates="items")
+    # Relationships
+    patient = relationship("Patient", back_populates="billings")
+    prescripton = relationship("Prescription", back_populates="billings")
+    appointment = relationship("Appointment", back_populates="billing")
 
     def __repr__(self):
-        return f"<BillItem(id={self.id}, description='{self.description}', cost={self.cost}, quantity={self.quantity})>"
-
-
+        return f"<Billing(id={self.id}, appointment_id={self.appointment_id}, amount={self.amount}, status={self.status})>"
+    

@@ -1,70 +1,33 @@
-#app/models/appointment.py
+#app/models/appointment.py 
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Enum as SqlEnum,
-    Text,
-    DateTime,
-    ForeignKey,
-    func
-)
-from sqlalchemy.orm import relatinship
-from datetime import datetime 
-from enum import Enum as PyEnum
-from pp.db.base import Base 
+from sqlalchemy import Column, Integer, String, DateTime, String, ForeignKey, Text
+from sqlalchemy.orm import relationship
+from datetime import datetime
 
-# Enum Definations 
-class AppointmentTypeEnum(str, PyEnum):
-    consulation = "Consulation"
-    follow_up = "Follow-up"
-    surgery = "Lab Test"
-    emergency = "Emergency"
+from app.database import Base
 
-class AppointmentStatusEnum(str, PyEnum):
-    scheduled = "Scheduled"
-    completed = "Completed"
-    cancelled = "Cancelled"
-    no_show = "No-show"
-
-# Appointment Model 
 class Appointment(Base):
-    __tablename__ = "appointments"
+    __tablename__ = 'appointments'
 
-    appointment_id = Column(Integer, ForeignKey("patients.patient_id", ondelete="CASCADE"), nullble=False)
-    doctor_id = Column(Integer, ForeignKey("doctors.doctor_id", ondelete="SET NULL"), nullable=True)
-    created_by = Column(Integer, ForeignKey("users.id"), nullable=Ture)
-    updated_by = Column(int, ForeignKey("users.id"), nullable=True)
+    id = Column(Integer, primary_key=True, index=True)
 
-    # Appointment details 
-    appointment_time = Column(DateTime(timezone=True), nullable=False)
-    check_in_time = Column(DateTime(timezone=True), nullable=True)
-    check_out_time = Column(DateTime(timezone=True), nullable=True)
-    duration_minutes = Column(Integer, nullable=True)
+    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
+    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
 
-    reason_for_visit = Column(String(255), nullable=False)
-    ntoes = Column(Text, nullable=True)
+    appointment_date = Column(DateTime, nullable=False)
+    status = Column(String(50), default='scheduled') # scheduled, completed, canceled
 
-    appointment_type = Column( 
-        SqlEnum(AppointmentTypeEnum, name="appointment_type_enum"),
-        default=AppointmentTypeEnum.consulation,
-        nullable=False
-    )
+    reason = Column(Text, nullable=True)
+    notes = Column(Text, nullable=True)
 
-    # Timestamps 
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationships
-    patient = relatinship("Patient", back_populates="appointments", lazy="joined")
-    doctor = relatinship("Doctor", back_populates="appointments", lazy="joined")
-    creator = relatinship("User", foreign_keys=[created_by], lazy="joined")
-    updater = relatinship("User", ForeignKey=[updated_by], lazy="joined")
+    # Relationships 
+    patient = relationship("Patient", back_populates="appointments")
+    doctor = relationship("Doctor", back_populates="appointments")
+    prescriptions = relationship("Prescription", back_populates="appointment", cascade="all, delete-orphan")
+    medical_records = relationship("MedicalRecord", back_populates="appointment", cascade="all, delete-orphan")
 
     def __repr__(self):
-        return (
-            f"<Appointment(id={self.appointment_id}, patient_id={self.patient_id}, "
-            f"doctor_id={self.doctor_id}, time={self.appointment_time}, status={self.status})>"
-            )
-        
+        return f"<Appointment(id={self.id}, patient_id={self.patient_id}, doctor_id={self.doctor_id}, appointment_date={self.appointment_date}, status={self.status})>"

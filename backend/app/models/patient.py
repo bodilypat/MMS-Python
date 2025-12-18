@@ -1,58 +1,44 @@
 #app/models/patient.py
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Date,
-    Enum,
-    Text,
-    TIMESTAMP,
-    func
-)
+from sqlalchemy import Column, Integer, String, Date, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db.base import Base 
-import enum 
+from datetime import datetime
 
-class GenderEnum(str, enum.Enum):
-    maile = "male"
-    female = "female"
-    other = "other"
-
-class StatusEnum(str, enum.Enum):
-    active = "active"
-    inactive = "inactive"
-    deceased = "deceased"
+from app.database import Base
 
 class Patient(Base):
-    __table__ = "patients"
+    __tablename__ = 'patients'
 
-    patient_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, index=True)
 
-    # Basic Info
-    first_name = Column(String(100), nullable=False)
-    last_name = Column(String(100), nullable=False)
+    # Optional link to user account (patient portal)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=True, unique=True)
+    
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
     date_of_birth = Column(Date, nullable=False)
-    gender = Column(Enum(GenderEnum, name="gender_enum"), nullable=False)
+    gender = Column(String, nullable=False)
 
-    # Contact Info
-    email = Column(String(100), unique=True, index=True, nullable=True)
-    phone_number = Column(String(20), unique=True, index=True, nullable=False)
-    address = Column(String(255), nullable=True )
+    phone_number = Column(String, nullable=True)
+    email = Column(String, nullable=True, unique=True)
+    address = Column(String, nullable=True)
 
-    # Medical Info
-    primary_cate_physical = Column(String(100), nullable=True)
-    medical_history = Column(Text, nullable=True)
-    allergies = Column(Text, nullable=True)
-    status = Column(Enum(StatusEnum, name="status_enum"), default=StatusEnum.active, nullable=False)
+    blood_group = Column(String, nullable=True)
+    allergies_info = Column(String, nullable=True)
+    emergency_contacts_info = Column(String, nullable=True)
 
-    # Timestamps 
-    created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
-    updated_at = Column(TIMESTAMP, server_default=func.new(), onupdate=func.now(), nullable=False)
+    is_active = Column(Boolean, default=True)
 
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    user = relationship("User", back_populates="patient", uselist=False)
+    appointments = relationship("Appointment", back_populates="patient", cascade="all, delete-orphan")
+    medical_records = relationship("MedicalRecord", back_populates="patient", cascade="all, delete-orphan")
+    prescriptions = relationship("Prescription", back_populates="patient", cascade="all, delete-orphan")
+    billing_records = relationship("BillingRecord", back_populates="patient", cascade="all, delete-orphan")
+    
     def __repr__(self):
-        return (
-            f"<Patient(patient_id={self.patient_id}, "
-            f"name='{self.first_name} {self.last_name}', "
-            f"status={self.status})>"
-        )
+        return f"<Patient(id={self.id}, name={self.first_name} {self.last_name})>"
+    

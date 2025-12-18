@@ -1,67 +1,37 @@
 #app/models/doctor.py
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Enum,
-    Text,
-    Date,
-    ForeignKey,
-    TIMESTAMP,
-    func
-)
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db.base import Base 
-import enum
-
-class GenderEnum(str, eum.Enum):
-    male = "male"
-    female = "famale"
-    other = "other"
-    
-class DoctorStatusEnum(Str, enum.Enum):
-    active = "active",
-    inactive = "inactive"
-    retired = "retired"
-    on_leave = "on_leave"
+from app.database import Base
+from datetime import datetime
 
 class Doctor(Base):
-    __tablename__ = "doctors"
+    __tablename__ = 'doctors'
 
-    doctor_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, index=True)
+    # Link to users table (authentication)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
 
-    # Personal Info
-    first_name = Column(String(100), nullable=False)
-    last_name = Column(String(100), nullable=False)
-    birthdate = Column(Date, nullable=True)
-    gender = Column(Enum(GenderEnum, name="gender_enum"), default=GenderEnum.other, nullable=False)
-    address = Column(String(255), nullable=True)
+    specialty = Column(String, nullable=False)
+    license_number = Column(String, unique=True, nullable=False)
 
-    # Professional Info
-    specialization = Column(String(100), nullable=False)
-    department = Column(String(100), nullable=True)
-    status = Column(Enum(DoctorStatusEnum, name="doctor_status_enum"), default=DoctorStatusEnum.active, nullable=False)
-    hire_date = Column(Date, nullable=True)
-    notes = Column(Text, nullable=True)
+    phone_number = Column(String, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
 
-    # Contact 
-    email = Column(String(150), unique=True, nullable=False)
-    phone_number = Column(String(20), unique=True, nullable=False)
+    experince_years = Column(Integer, nullable=False)
+    is_active = Column(Boolean, default=True)
 
-    # Metadata 
-    created_by = Column(Integer, ForeignKey("users_id"), nullable=True)
-    updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
-    created_at = Column(TIMESTAMP, server_default=func.now(), nullable=True)
-    updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=funct.now(), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationships (optional)
-    created_user = relationship("Users", foreign_keys=[created_by], backref="created_doctors")
-    updated_user = relationship("Users", foreign_keys=[updated_by], backref="updated_doctors")
+    # Relationship with Patient model   
+    patients = relationship("Patient", back_populates="doctor")
+    user = relationship("User", back_populates="doctor_profile")
+    appointments = relationship("Appointment", back_populates="doctor", )
+    prescriptions = relationship("Prescription", back_populates="doctor")
 
     def __repr__(self):
-        return (
-            f"<Doctor(doctor_id={self.doctor_id}, "
-            f"name='{self.first_name} {self.last_name}', "
-            f"status={self.status})>"
-        )
+        return f"<Doctor(id={self.id}, name={self.first_name} {self.last_name}, specialty={self.specialty})>"
+    

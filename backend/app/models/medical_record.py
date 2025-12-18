@@ -1,61 +1,37 @@
 #app/models/medical_record.py
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Text,
-    Enum as SqlEnum,
-    ForeignKey,
-    TIMESTAMP,
-    func
-)
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
-from enum import Eum as PyEnum 
-from app.db.base import Base  
+from datetime import datetime
 
-#ENUM DEFINITION 
-class MedicalRecordStatusEnum(str, PyEnum):
-    active = "active"
-    archived = "Archived"
-    inactive = "Tnactive"
+from .base import Base
 
-# Medical record 
 class MedicalRecord(Base):
-    __tablename__ = "medical_records"
+    __tablename__ = 'medical_records'
 
-    medical_record_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
+    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
+    appointment_id = Column(Integer, ForeignKey('appointments.id'), nullable=False)
 
-    # Foreign Keys 
-    patient_id = Column(Integer, ForeignKey("patients.patient_id", ondelete="CASCADE"), nullable=False)
-    appointment_id = Column(Integer, ForeignKey("appointments.appointment_id", ondelete="CASCADE"), nullable=False)
-    created_by = Column(Integer, ForeignKey("users.id"), nullable=True)
-    updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
-
-    # Record Details 
-    diagnosis = Column(String(500), nullable=True)
-    treatment_plan = Column(Text, nullable=True)
-    note = Column(Text, nullable=True)
-    attactments = Column(String(255), nullable=True)
-
-    status =  Column(
-        SqlEnum(MedicalRecordStatusEnum, name="medical_record_status_enum"),
-        default=MedicalRecordStatusEnum.active,
-        nullable=False 
+    diagnosis = Column(String(255), nullable=False)
+    symptoms = Column(Text, nullable=False)
+    treatment = Column(Text, nullable=False)
+    record_type = Column(
+        String(100), 
+        default= datetime.utcnow, 
+        onupdate=datetime.utcnow
     )
 
-    # Timestamp 
-    created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
-    updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now(), nullable=False)
-
-    # Relationships 
-    patient = relationship("Patient", back_populates="medical_records", lazy="joined")
-    appointment = relationship("Appointment", back_populates="medical_records", lazy="joined")
-    creator = relationship("User", foreign_keys=[created_by], lazy="joined")
-    updater = relationship("User", foreign_keys=[updated_by], lazy="joined")
-
+    record_date = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    patient = relationship("Patient", back_populates="medical_records")
+    doctor = relationship("Doctor", back_populates="medical_records")
+    appointment = relationship("Appointment", back_populates="medical_records", uselist=False)
+    
     def __repr__(self):
-        return (
-            f"<MedicalRecord(id={self.medical_record_id}, patient_id={self.patient_id},"
-            f"appointment_id={self.appointment_id}, status={self.status})>"
-        )
+        return f"<MedicalRecord(id={self.id}, appointment_id={self.appointment_id}, record_date={self.record_date})>"
+    
