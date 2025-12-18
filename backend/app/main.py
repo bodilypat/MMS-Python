@@ -1,26 +1,24 @@
 #app/main.py
 
 from fastapi import FastAPI
-from app.api.api_router import api_router
-from app.middleware.auth_middleware import AuthMiddleware
-from app.core.config import settings
+from app.routers import (
+    auth,
+    users,
+    patients,
+    appointnents,
+    doctors,
+    medical_records,
+    prescriptions,  
+    billing,
+)
 
+app = FastAPI("medical Management System")
+app.include_router(auth.router)
+app.include_router(users.router)
+app.include_router(patients.router)
+app.include_router(appointnents.router)
+app.include_router(doctors.router)
+app.include_router(medical_records.router)
+app.include_router(prescriptions.router)
+app.include_router(billing.router)
 
-app = FastAPI(
-		title="Medical Management System (MMS) API",
-		description="API for managing patients, doctors, appointments, prescription, lab, billing, inventory, and medical records.",
-		version ="1.0.0",
-	)
-
-# Register middleware
-app.middleware('http')(AutoMiddleware)
-
-# Include all routers
-app.include_router(api_router)
-
-# Startup events
-@app.on_event("startup")
-async def startup():
-    from app.db.init_db import init_db
-    await init_db()
-    
