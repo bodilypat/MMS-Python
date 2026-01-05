@@ -1,24 +1,21 @@
-#app/services/__init__.py
+#app/models/__init__.py
 
-from app.services.auth_service import AuthService
-from app.services.user_service import UserService
-from app.services.patient_service import PatientService
-from app.services.appointment_service import AppointmentService
-from app.services.medical_record_service import MedicalRecordService
-from app.services.prescription_service import PrescriptionService
-from app.services.billing_service import BillingService
-from app.services.notification_service import NotificationService
-from app.services.reporting_service import ReportingService
+from app.models.user import User 
+from app.models.patient import Patient
+from app.models.appointment import Appointment
+from app.models.doctor import Doctor
+from app.models.medical_record import MedicalRecord
+from app.models.prescription import Prescription
+from app.models.billing import Billing
 
 __all__ = [
-    "AuthService",
-    "UserService",
-    "PatientService",
-    "AppointmentService",
-    "MedicalRecordService",
-    "PrescriptionService",
-    "BillingService",
-    "NotificationService",
-    "ReportingService",
+    'User',
+    'Patient',
+    'Appointment',
+    'Doctor',
+    'MedicalRecord',
+    'Prescription',
+    'Billing'
 ]
+
 
