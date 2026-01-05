@@ -15,16 +15,21 @@ class PatientBase(BaseModel):
     email: EmailStr
     phone_number: Optional[str] = None
     address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip_code: Optional[str] = None
+    country: Optional[str] = None
     blood_group: Optional[str] = None
     allergies: Optional[str] = None
-    emergency_contact: Optional[str] = None
-    medical_history: Optional[str] = None
-    current_medications: Optional[str] = None
+    medical_conditions: Optional[str] = None
+    emergency_contact_info: Optional[str] = None
+    assigned_doctor_id: Optional[int] = None
+    next_appointment: Optional[datetime] = None
+    insurance_provider: Optional[str] = None
+    insurance_policy_number: Optional[str] = None
     is_active: bool = True
     is_deleted: bool = False
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-
+    
 #---------------------------------------
 # Patient Create Schema
 #---------------------------------------
@@ -39,17 +44,21 @@ class PatientUpdate(PatientBase):
     last_name: Optional[str] = None
     gender: Optional[str] = None
     date_of_birth: Optional[date] = None
-    phone_number: Optional[str] = None
     email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
     address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip_code: Optional[str] = None
+    country: Optional[str] = None
     blood_group: Optional[str] = None
     allergies: Optional[str] = None
-    emergency_contact: Optional[str] = None
-    medical_history: Optional[str] = None
-    current_medications: Optional[str] = None
+    emergency_contact_info: Optional[str] = None
+    medical_conditions: Optional[str] = None
+    insurance_provider: Optional[str] = None
+    insurance_policy_number: Optional[str] = None
     is_active: Optional[bool] = None
     is_deleted: Optional[bool] = None
-    updated_at: Optional[datetime] = None
     user_id: Optional[int] = None
 
 #---------------------------------------
