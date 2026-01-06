@@ -1,14 +1,15 @@
-# app/main.py 
-
-""" 
-    FastAPI application entry point for Medical Management System(MMS)
-    Responsibilities:
-    - Load environment configuration
-    - Initialize logging
-    - Connect database 
-    - Register middleware
-    - Include API routers
+#app/main.py
 """
+   FastAPI application entry point for Medical Management System (MMS)
+   Responsibilities:
+      Load environment configuration
+      Initialize logging 
+      Manage application lifespan
+      Initialize database 
+      Register middleware 
+      Include API routers 
+"""
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -17,51 +18,63 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.core.logging import init_logging
 from app.db.database import engine 
-from app.models.base import Base
+from app.models.base import Base 
 from app.api.v1.api_router import api_router
 
-#--------------------------------------------
-# Application Lifespan Context Manager(Start & Shoutdown )
-#--------------------------------------------
+#-----------------------------------------
+# Application lifespan (Startup and Shutdown)
+#-----------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup Code
+    # Startup actions
     init_logging()
-    Base.metadata.create_all(bind=engine)
 
-    app.logger.info(" MMS Backend started successfully")
+    try: 
+        Base.metadata.create_all(bind=engine)
+        app.logger.info("Database connected and tables eensured.")
+    except Exception as e:
+        app.logger.error(f"Database connection failed: {e}")
+        raise e
+    
+    app.logger.info("Application startup complete.")
 
     yield
     
-    # Shutdown Code
-    app.logger.info(" MMS Backend shutdown completed")
+    # Shutdown actions (if any)
+    app.logger.info("Application shutdown complete.")
 
-#--------------------------------------------
-# Create FastAPI Application Instance
-#--------------------------------------------
+#-----------------------------------------
+# FastAPI Application Factory
+#-----------------------------------------
 def create_app() -> FastAPI:
     app = FastAPI(
         title="Medical Management System (MMS) Backend",
-        description="Backend API for Medical Management System",
+        description="Backend API for managing medical records, appointments, and patient data.",
         version="1.0.0",
         docs_url="/docs",
         redoc_url="/redoc",
-        lifespan=lifespan
+        lifespan=lifespan,
+        openapi_url="/openapi.json",
     )
 
-    # Register Middleware
+#-----------------------------------------
+# Middleware 
+#-----------------------------------------
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.CORS_ALLOW_ORIGINS,
+        allow_origins=settings.CORS_ORIGINS,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
-    # Include API Routers
+#-----------------------------------------
+# API Routers
+#-----------------------------------------
     app.include_router(api_router, prefix="/api/v1")
     return app
+#-----------------------------------------
+# ASGI Application 
+#-----------------------------------------
 app = create_app()
-#--------------------------------------------
-# End of main.py
-#--------------------------------------------
+
